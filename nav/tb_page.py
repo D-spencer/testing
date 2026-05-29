@@ -76,7 +76,7 @@ def show_tb_page():
             chest_pain = yes_no(
             'Do you have a chest pain'
             )
-        st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
         with col2:
             back_pain = yes_no(
             'Do you have a back pain'
