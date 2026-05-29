@@ -11,7 +11,7 @@ import os
 # model = joblib.load('model/HIV_model_v1.pkl')
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
-model_path = os.path.join(base_dir,'..', 'model','HIV_model_v1.pkl')
+model_path = os.path.join(base_dir,'..', 'model','Hiv_model_v1.pkl')
 model = joblib.load(model_path)
 
 
