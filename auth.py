@@ -110,7 +110,7 @@ def reset_password(email):
         response = supabase.auth.reset_password_for_email(
             email, 
             {
-                "redirect_to": "https://your-app-url.com/reset-password"
+                "redirect_to": "https://testing2222222.streamlit.app/reset-password"
                 # "redirect_to": "http://localhost:8501"
             }
         )
