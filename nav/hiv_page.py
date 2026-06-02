@@ -7,7 +7,7 @@ from streamlit_extras.stylable_container import stylable_container
 
 
 # LOAD MODEL
-model = joblib.load('model/HIV_model_v1.pkl')
+model = joblib.load('model/Hiv_model_v1.pkl')
 
 
 def show_hiv_page():
