@@ -1,0 +1,648 @@
+
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+html, body, [class*="css"]  {
+    font-family: 'Inter', sans-serif;
+}
+
+/* .stApp {
+    background: linear-gradient(
+        135deg,
+       #060816,
+       #0d1025,
+       #090b18
+    );
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+} */
+
+.stApp {
+    background:
+        radial-gradient(circle at top left, #18203f 0%, transparent 25%),
+        radial-gradient(circle at bottom right, #2d0b45 0%, transparent 25%),
+        linear-gradient(
+            135deg,
+            #040816 0%,
+            #090d1f 45%,
+            #060816 100%
+        );
+
+    background-attachment: fixed;
+
+    color: white;
+}
+
+@keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
+.hero-section {
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    padding: 2.5rem;
+    border-radius: 25px;
+    text-align: center;
+    color: white;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.85;
+}
+
+.glass-card {
+    background: rgba(8, 12, 28, 0.88);
+
+    backdrop-filter: blur(14px);
+
+    padding: 1.8rem;
+
+    border-radius: 24px;
+
+    border: 1px solid rgba(120, 119, 198, 0.18);
+
+    color: white;
+
+    box-shadow:
+        0 0 10px rgba(0, 140, 255, 0.08),
+        0 0 25px rgba(162, 0, 255, 0.12),
+        inset 0 0 10px rgba(255,255,255,0.02);
+
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+
+    border: 1px solid rgba(180, 120, 255, 0.35);
+
+    box-shadow:
+        0 0 18px rgba(0, 140, 255, 0.2),
+        0 0 40px rgba(162, 0, 255, 0.25),
+        inset 0 0 15px rgba(255,255,255,0.03);
+}
+
+.metric-card {
+    background: rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 1.5rem;
+    text-align: center;
+    color: white;
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.stButton > button {
+    width: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            #007bff,
+            #7b2cff
+        );
+
+    color: white;
+
+    border: none;
+
+    border-radius: 16px;
+
+    padding: 0.85rem 1.5rem;
+
+    font-weight: 600;
+
+    font-size: 1rem;
+
+    transition: all 0.3s ease;
+
+    box-shadow:
+        0 0 10px rgba(0,123,255,0.2),
+        0 0 20px rgba(123,44,255,0.15);
+}
+
+.stButton > button:hover {
+
+    transform: translateY(-3px) scale(1.01);
+
+    box-shadow:
+        0 0 18px rgba(0,123,255,0.4),
+        0 0 40px rgba(123,44,255,0.35);
+}
+.stSelectbox label {
+    color: rgb(255, 255, 255) !important;
+    font-weight: 600;
+}
+
+.stMarkdown, .stText {
+    color: white;
+}
+
+div[data-baseweb="select"] > div {
+    background: rgba(10, 15, 35, 0.95) !important;
+
+    border-radius: 14px !important;
+
+    border: 1px solid rgba(138, 43, 226, 0.35) !important;
+
+    min-height: 52px;
+
+    transition: all 0.3s ease !important;
+
+    box-shadow:
+        0 0 10px rgba(0,140,255,0.08);
+    color: white !important;
+}
+
+div[data-baseweb="select"] > div:hover {
+    border: 1px solid rgba(180,120,255,0.55) !important;
+
+    box-shadow:
+        0 0 15px rgba(138,43,226,0.25);
+}
+
+div[data-baseweb="select"] span {
+    color: white !important;
+    font-weight: 500;
+}
+
+ul {
+    background: #0b1020 !important;
+}
+
+section[data-testid="stSidebar"] {
+
+    background:
+        linear-gradient(
+            180deg,
+            #060816 0%,
+            #090d1f 100%
+        );
+
+    border-right:
+        1px solid rgba(255,255,255,0.05);
+}
+
+section[data-testid="stSidebar"] .stButton button {
+
+    background: transparent;
+
+    border: 1px solid transparent;
+
+    box-shadow: none;
+}
+
+section[data-testid="stSidebar"] .stButton button:hover {
+
+    border:
+        1px solid rgba(0,123,255,0.45);
+
+    background:
+        rgba(0,123,255,0.08);
+
+    box-shadow:
+        0 0 15px rgba(0,123,255,0.25);
+}
+
+.section-title {
+    font-size: 1.5rem;
+
+    font-weight: 700;
+
+    color: white;
+
+    margin-bottom: 20px;
+
+    text-shadow:
+        0 0 10px rgba(138,43,226,0.35);
+
+    
+}
+
+/* Selected value text */
+div[data-baseweb="select"] span {
+    color: white !important;
+}
+
+/* Selectbox input text */
+div[data-baseweb="select"] input {
+    color: white !important;
+}
+
+/* Dropdown menu options */
+div[role="listbox"] div {
+    color: white !important;
+}
+
+/* Arrow icon */
+div[data-baseweb="select"] svg {
+    fill: white !important;
+}
+
+/* Dropdown option text */
+li[role="option"] {
+    color: white !important;
+}
+
+/* Text inside dropdown options */
+li[role="option"] * {
+    color: white !important;
+}
+
+li[role="option"] {
+    background-color: #0b1020 !important;
+    color: white !important;
+}
+li[role="option"]:hover {
+    background-color: rgba(123, 44, 255, 0.2) !important;
+    color: white !important;
+}
+li[role="option"][aria-selected="true"] {
+    background-color: rgba(123, 44, 255, 0.3) !important;
+    color: white !important;
+}
+
+
+/* Main number input box */
+div[data-testid="stNumberInputContainer"] div[data-baseweb="input"] {
+
+    background: rgba(10, 15, 35, 0.95) !important;
+
+    border: 1px solid rgba(138, 43, 226, 0.35) !important;
+
+    border-radius: 14px !important;
+
+    min-height: 52px !important;
+
+    box-shadow: none !important;
+    
+}
+
+div[data-testid="stNumberInput"] input:hover {
+    border-color: rgba(180,120,255,0.55) !important;
+
+    box-shadow:
+        0 0 12px rgba(138,43,226,0.20);
+}
+
+div[data-testid="stNumberInput"] input:focus {
+    border-color: rgba(180,120,255,0.8) !important;
+
+    box-shadow:
+        0 0 15px rgba(138,43,226,0.30) !important;
+}
+
+
+button[data-testid="stNumberInputStepUp"],
+button[data-testid="stNumberInputStepDown"] {
+
+    background: rgba(10, 15, 35, 0.95) !important;
+
+    color: white !important;
+
+    border: none !important;
+}
+button[data-testid="stNumberInputStepUp"]:hover,
+button[data-testid="stNumberInputStepDown"]:hover {
+
+    background: rgba(123,44,255,0.15) !important;
+}
+label {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+/* Outer number input container */
+div[data-testid="stNumberInput"] > div {
+    background: rgba(10, 15, 35, 0.95)!important;
+
+    border: 1px solid rgba(138, 43, 226, 0.35) !important;
+  
+    border-radius: 14px !important;
+
+    min-height: 52px;
+    
+}
+
+
+
+
+/* Actual input field */
+input[data-testid="stNumberInputField"] {
+
+    background:  rgba(10, 15, 35, 0.95)!important;
+
+    color: white !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    font-size: 1rem !important;
+
+    font-weight: 500 !important;
+}
+
+
+div[data-testid="stNumberInputContainer"] div[data-baseweb="input"] {
+    height: 52px !important;
+}
+
+div[data-testid="stNumberInputContainer"] div[data-baseweb="input"]:focus-within {
+
+    border-color: rgba(180,120,255,0.8) !important;
+
+    box-shadow:
+        0 0 12px rgba(138,43,226,0.25) !important;
+}
+
+
+/* 1. Target the text inside the sidebar page navigation links */
+[data-testid="stSidebarNavItems"] a span {
+    color: #FFFFFF !important;
+    font-weight: 500;
+}
+
+/* 2. Style the navigation box/container to make it look modern */
+[data-testid="stSidebarNavItems"] li {
+    background-color: rgba(255, 255, 255, 0.04) !important; /* Subtle transparent white */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important; /* Thin crisp border */
+    border-radius: 12px !important; /* Smooth modern rounded corners */
+    margin-bottom: 8px !important; /* Spacing between navigation items */
+    transition: all 0.3s ease !important; /* Smooth hover transition */
+}
+
+/* 3. Add a modern interactive effect when hovering over the links */
+[data-testid="stSidebarNavItems"] li:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important; /* Lighter on hover */
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    transform: translateY(-1px); /* Slight lift effect */
+}
+
+/* 4. Highlight the currently active page box */
+[data-testid="stSidebarNavItems"] li[data-selected="true"] {
+    background-color: rgba(255, 255, 255, 0.18) !important; /* Stronger background for active page */
+    border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Target the sidebar collapse/expand arrow icon */
+[data-testid="stSidebarCollapse"] button svg,
+[data-testid="collapsedControl"] svg {
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+    color: #FFFFFF !important;
+}
+
+/* Ensure it stays white when hovered or focused */
+[data-testid="stSidebarCollapse"] button:hover svg,
+[data-testid="collapsedControl"]:hover svg {
+    fill: #FFFFFF !important;
+    stroke: #FFFFFF !important;
+    color: #FFFFFF !important;
+}
+
+
+[data-testid="stHeader"] {
+    background: rgba(0,0,0,0) !important;
+}
+.main .block-container {
+    padding-top: 0px !important;
+}
+
+
+/* Reduce the actual height and padding of the top header area */
+[data-testid="stHeader"] {
+    background-color: rgba(0, 0, 0, 0) !important;
+    height: 1rem !important; /* Forces the structural block to shrink */
+}
+
+/* Hard reset on the main container positioning */
+.main .block-container {
+    padding-top: 1rem !important; /* Keeps a tiny, clean 1rem breathing room */
+    margin-top: 0px !important;
+}
+
+/* Optional: If the multi-page navigation header is adding extra space */
+[data-testid="stSidebarNav"] + div {
+    padding-top: 0px !important;
+}
+
+/* 1. Eliminate structural gaps inside the main block element */
+[data-testid="stMainBlockContainer"] {
+    padding-top: 1.5rem !important;
+    padding-bottom: 1rem !important;
+    margin-top: 0px !important;
+}
+
+/* 2. Target the inner block layout container where pages render elements */
+.stAppV2 [data-testid="stVerticalBlock"] {
+    gap: 1rem !important;
+}
+
+/* 3. Force your custom HTML hero sections to ignore default margins */
+.hero-section {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+}
+
+/* 4. Ensure any top-level header element inside the main body snaps to the roof */
+h1, h2, h3 {
+    margin-top: 0px !important;
+    padding-top: 0px !important;
+}
+
+/* --- Desktop Styling (Slightly reduced height) --- */
+.hero-section {
+    margin-top: 0px !important;
+    padding-top: 15px !important;
+    padding-bottom: 15px !important; /* Shrinks vertical padding */
+}
+
+.hero-title {
+    font-size: 2rem !important; /* Slightly smaller text so it doesn't wrap massively */
+    margin-bottom: 4px !important;
+}
+
+.hero-subtitle {
+    font-size: 1rem !important;
+    margin-bottom: 4px !important;
+}
+
+
+/* --- Mobile View Styling (For screen widths under 768px) --- */
+@media (max-width: 768px) {
+    .hero-section {
+        padding-top: 8px !important;
+        padding-bottom: 8px !important;
+        margin-bottom: 10px !important; /* Keeps it tight to the content below */
+    }
+
+    .hero-title {
+        font-size: 1.4rem !important; /* Shrinks the headline to fit small screens perfectly */
+        line-height: 1.2 !important;
+    }
+
+    .hero-subtitle {
+        font-size: 0.85rem !important; /* Shrinks the description sub-text */
+        line-height: 1.3 !important;
+    }
+    
+    /* Shrinks the "Logged in as" line spacing */
+    .hero-section div[style*="opacity"] {
+        font-size: 0.8rem !important;
+        margin-top: 2px !important;
+    }
+}
+
+/* Target the container element that wraps around Plotly charts */
+[data-testid="stPlotlyChart"] {
+    background-color: rgba(255, 255, 255, 0.05) !important; /* Subtle, crisp glass background */
+    backdrop-filter: blur(8px) !important; /* Premium blur effect */
+    border: 1px solid rgba(255, 255, 255, 0.1) !important; /* Thin elegant outline */
+    border-radius: 16px !important; /* Modern smooth corners */
+    padding: 20px !important; /* Generous internal breathing room */
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2) !important; /* Soft, deep modern shadow */
+    margin-bottom: 24px !important; /* Clean spacing before the next element */
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* Subtle interactive lift when hovering over the chart cards */
+[data-testid="stPlotlyChart"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Fix any default Plotly internal background container bleed */
+[data-testid="stPlotlyChart"] .js-plotly-plot .plotly .main-svg {
+    background: transparent !important; /* Forces chart area to inherit our clean container background */
+}
+
+/* 1. The outer card structure (Keep this from before) */
+[data-testid="stDataFrame"] {
+    background-color: rgba(15, 23, 42, 0.6) !important; /* Deep modern dark-blue backdrop */
+    backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 16px !important;
+    padding: 10px !important;
+    box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 2. Target the canvas grid header and row tracking colors */
+[data-testid="stDataFrame"] data-grid {
+    --bg-color: #090d1f !important;
+    --text-color: #ffffff !important;
+}
+
+/* 3. Force cell elements, headers, and structural backgrounds dark */
+[data-testid="stDataFrame"] [role="grid"],
+[data-testid="stDataFrame"] div {
+    background-color: transparent !important;
+    color: #FFFFFF !important;
+}
+
+/* 4. Smooth out internal edges to match the parent container curves */
+[data-testid="stDataFrame"] canvas, 
+[data-testid="stDataFrame"] .glideDataGrid {
+    border-radius: 12px !important;
+}
+
+
+
+
+/* 1. Target the 'Open' arrow (The one you inspected) */
+[data-testId="stExpandSidebarButton"] {
+    background-color: white !important;
+    border: 2px solid #4CAF50 !important; /* Green border */
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: fixed !important;
+    left: 10px !important;
+    top: 10px !important;
+    z-index: 999999 !important;
+}
+
+/* 2. Target the 'Close' arrow (When sidebar is open) */
+[data-testid="stSidebarCollapseButton"] {
+    background-color: white !important;
+    border: 2px solid #4CAF50 !important;
+    border-radius: 50% !important;
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* 3. Make sure the arrows (icons) inside BOTH are visible and black */
+[data-testId="stExpandSidebarButton"] span,
+[data-testid="stSidebarCollapseButton"] svg {
+    color: black !important;
+    fill: black !important;
+}
+
+/* 4. Fix for the Header area which often hides the collapsed button */
+header[data-testid="stHeader"] {
+    background: transparent !important;
+}
+
+/* Remove the gap between the email input and the form */
+[data-testid="stVerticalBlock"] > div:has(input[aria-label="Email"]) {
+    margin-bottom: -15px !important;
+}
+
+/* Make the email input look like the top of the form */
+input[aria-label="Email"] {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+    border-bottom: none !important;
+}
+
+/* Remove the top rounding and top border of the form so it connects */
+[data-testid="stForm"] {
+    border-top: none !important;
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    padding-top: 0px !important;
+}
+
+/* Force labels to be a readable dark gray/blue in light mode 
+   and automatically adapt in dark mode using Streamlit's variables */
+[data-testid="stWidgetLabel"] p {
+    color: var(--text-color) !important;
+    font-weight: 600 !important;
+}
+
+/* Fix Placeholder visibility */
+input::placeholder {
+    color: rgba(0, 0, 0, 0.4) !important; /* Visible but subtle */
+}
+
+[data-theme="dark"] input::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Update your auth-box or stylable container key */
+div[data-testid="stVerticalBlock"]:has(> .auth-box), 
+[data-testid="stForm"] {
+    background-color: var(--secondary-background-color) !important;
+    border: 1px solid rgba(128, 128, 128, 0.2) !important;
+    padding: 30px !important;
+    border-radius: 15px !important;
+}
+
