@@ -192,7 +192,7 @@ if "user" not in st.session_state:
 #     # ---------------- RECOVERY DETECTION (STEP 5) ----------------
 #     query_params = st.query_params
 
-#     if query_params.get("type") == "recovery":
+#     if query_params.get("action") == "reset" or query_params.get("type") == "recovery":
 #         st.session_state.auth_mode = "reset"
     
     
