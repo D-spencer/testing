@@ -116,7 +116,7 @@ def reset_password(email):
             email, 
             {
                 # "redirect_to": "https://your-app-url.com/reset-password"
-                "redirect_to": "https://testing2222222.streamlit.app/?action=reset"
+                "redirect_to": "https://testing2222222.streamlit.app/"
             }
         )
         return response
