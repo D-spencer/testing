@@ -2,10 +2,11 @@ import streamlit as st
 import time
 from nav.tb_page import show_tb_page 
 from nav.hiv_page import show_hiv_page
-from auth import sign_up, login, logout, send_reset_otp, verify_otp_and_update_password,can_resend_otp
+from auth import sign_up, login, logout, send_reset_otp, verify_otp_and_update_password,can_request_otp
 from database import supabase, get_user_role, save_feedback, get_user_name
 from streamlit_autorefresh import st_autorefresh
 from streamlit_extras.stylable_container import stylable_container
+
 
 
 
@@ -17,49 +18,64 @@ st.set_page_config(page_title='Disease Prediction App' , layout='wide' , initial
 
 # #-----------------Hide Side bar---------------------------
 # ---------------- SESSION STATE INIT ----------------
-if "user" not in st.session_state:
-    st.session_state["user"] = None
 
-if "role" not in st.session_state:
-    st.session_state["role"] = "user"
+def init_session():
+    defaults = {
+        "user": None,
+        "role": "user",
+        "session": None,
+        "full_name": "",
+    }
 
-if "session" not in st.session_state:
-    st.session_state["session"] = None
+    for key, value in defaults.items():
+        if key not in st.session_state:
+            st.session_state[key] = value
 
-
+init_session()
 
 # ---------------- RESTORE SUPABASE SESSION ----------------
-if st.session_state["session"] is None:
+if not st.session_state.get("session"):
     try:
         session = supabase.auth.get_session()
 
-        if session and getattr(session, "user", None) is not None:
+        if session and getattr(session, "user", None):
+
+            # Restore authenticated user
             st.session_state["session"] = session
             st.session_state["user"] = session.user
-            
-            # Safe check: Only query the database if the email actually exists
-            if session.user.email:
-                role = get_user_role(session.user.email)
-                st.session_state["role"] = role
-                
-                full_name = get_user_name(session.user.email)
-                st.session_state["full_name"] = full_name
-            else:
-                st.session_state["role"] = "user"
+            st.session_state["active_user_id"] = session.user.id
+
+            # Fetch role
+            role = get_user_role(session.user.id)
+            st.session_state["role"] = role or "user"
+
+            # Fetch full name
+            full_name = get_user_name(session.user.id)
+            st.session_state["full_name"] = full_name or ""
+
         else:
-            # Cleanly ensure states are cleared if there's no session
+            # No active session found
             st.session_state["session"] = None
             st.session_state["user"] = None
             st.session_state["role"] = "user"
+            st.session_state["full_name"] = ""
+            st.session_state["active_user_id"] = None
 
-    except Exception:
-        pass
+    except Exception as e:
+        st.error(f"Session restore error: {e}")
+
+        st.session_state["session"] = None
+        st.session_state["user"] = None
+        st.session_state["role"] = "user"
+        st.session_state["full_name"] = ""
+        st.session_state["active_user_id"] = None
 
 
 # ---------------- GET USER ----------------
 user = st.session_state.get("user")
 
-
+if "full_name" not in st.session_state:
+    st.session_state["full_name"] = ""
 
 
 # ---------------- HIDE SIDEBAR (ONLY IF NOT LOGGED IN) ----------------
@@ -76,12 +92,23 @@ if not user:
 
 # ---------------- SIDEBAR CONTENT  ----------------
 if user and hasattr(user, "email"):
-    # st.sidebar.success(f"Welcome, {user.email}")
-    st.sidebar.success(f"Welcome, {st.session_state['full_name']}")
-    # st.sidebar.info(f"Role: {st.session_state.get('role', 'user')}")
+    name = st.session_state.get("full_name")
+
+    if not name:
+        name = user.email.split("@")[0]
+
+    st.sidebar.success(f"Welcome, {name}")
+    
+    # st.sidebar.write("User ID:", st.session_state.get("user").id if st.session_state.get("user") else None)
+    # st.sidebar.write("Active ID:", st.session_state.get("active_user_id"))
+    # st.sidebar.write("Role:", st.session_state.get("role"))
+    # st.sidebar.write("Name:", st.session_state.get("full_name"))
 
 else:
     st.sidebar.warning("Please log in")
+
+
+
 
 
 st.markdown("""
@@ -95,9 +122,7 @@ st.markdown("""
 </style>
             """ , unsafe_allow_html=True)
 
-##
-if "user" not in st.session_state:
-    st.session_state["user"] = None
+
 
 
 # ================= AUTH PAGE =================
@@ -170,6 +195,8 @@ def auth_page():
     if "otp_cooldown" not in st.session_state:
         st.session_state.otp_cooldown = 60  # seconds
 
+        \
+
     
         
     # ---------------- MAIN CONTAINER (CENTERED) ----------------
@@ -212,6 +239,7 @@ def auth_page():
             """,
         ):
                 if st.session_state.auth_mode == "otp_reset":
+
                     st.markdown('<div class="title">Reset Password via OTP</div>', unsafe_allow_html=True)
 
                     # =================================================
@@ -219,38 +247,45 @@ def auth_page():
                     # =================================================
                     if st.session_state.reset_step == "request":
 
-                        email = st.text_input("Email", placeholder="Enter your email", key="auth_reset_email_input")
+                        email = st.text_input(
+                            "Email",
+                            placeholder="Enter your email",
+                            key="auth_reset_email_input"
+                        )
 
                         st.markdown('<div class="subtitle">A 6-digit code will be sent to your inbox</div>', unsafe_allow_html=True)
 
                         if st.button("Send Reset Code", use_container_width=True):
 
-                            if email:
-                                if st.session_state.otp_timer_start == 0 or can_resend_otp():
-
-                                    with st.spinner("Sending code..."):
-                                        if send_reset_otp(email.strip()):
-                                            st.success("A 6-digit code has been sent to your email.")
-
-                                            st.session_state.reset_email_value = email.strip()
-                                            st.session_state.reset_step = "verify"
-
-                                            # START TIMER
-                                            st.session_state.otp_timer_start = time.time()
-
-                                            st.rerun()
-                                        else:
-                                            st.error("Failed to send code. Are you sure this email is correct, Try again.")
-
-                                else:
-                                    remaining = int(st.session_state.otp_cooldown - (time.time() - st.session_state.otp_timer_start))
-                                    st.warning(f"Please wait {remaining}s before requesting another code.")
-                            else:
+                            if not email:
                                 st.warning("Please enter your email address.")
+
+                            elif not can_request_otp() and st.session_state.otp_timer_start != 0:
+                                st.warning("You can only request a new OTP after 1 minute.")
+
+                            else:
+                                with st.spinner("Sending code..."):
+
+                                    success = send_reset_otp(email.strip())
+
+                                    if success:
+                                        st.success("A 6-digit code has been sent to your email.")
+
+                                        st.session_state.reset_email_value = email.strip()
+                                        st.session_state.reset_step = "verify"
+
+                                        # START TIMER
+                                        st.session_state.otp_timer_start = time.time()
+
+                                        st.rerun()
+
+                                    else:
+                                        st.error("Failed to send code. Try again.")
 
                         if st.button("← Back to Sign In", use_container_width=True):
                             st.session_state.auth_mode = "signin"
                             st.rerun()
+
 
                     # =================================================
                     # STEP 2: VERIFY OTP + RESET PASSWORD
@@ -259,94 +294,73 @@ def auth_page():
 
                         st.markdown('<div class="subtitle">Enter OTP and new password</div>', unsafe_allow_html=True)
 
-                        st_autorefresh(interval=1000, key="otp_timer")
-
-                        # ---------------- COOLDOWN DISPLAY ----------------
-                        remaining = int(
-                            st.session_state.otp_cooldown -
-                            (time.time() - st.session_state.otp_timer_start)
-                        )
-
-                        if remaining > 0:
-                            st.info(f"⏳ Resend OTP in {remaining}s")
-                        else:
-                            st.success("✅ You can resend OTP now")
-
-                        # ---------------- RESEND OTP BUTTON ----------------
-                        if can_resend_otp(
-                            st.session_state.otp_timer_start,
-                            st.session_state.otp_cooldown
-                        ):
-
-                            if st.button("Resend OTP", use_container_width=True):
-
-                                with st.spinner("Resending code..."):
-                                    if send_reset_otp(st.session_state.reset_email_value):
-                                        st.success("New OTP sent!")
-
-                                        st.session_state.otp_timer_start = time.time()
-                                        st.rerun()
-                                    else:
-                                        st.error("Failed to resend OTP")
-
-                        else:
-                            remaining = int(
-                                st.session_state.otp_cooldown -
-                                (time.time() - st.session_state.otp_timer_start)
-                            )
-
-                            st.button(f"Resend OTP ({remaining}s)", disabled=True, use_container_width=True)
-                        # ---------------- OTP + PASSWORD FIELDS ----------------
                         otp_code = st.text_input("Enter 6-digit OTP Code", max_chars=6, placeholder="000000")
                         new_password = st.text_input("New Password", type="password", placeholder="Enter new password")
                         confirm_password = st.text_input("Confirm New Password", type="password", placeholder="Confirm new password")
 
-                        # ---------------- VERIFY BUTTON ----------------
-                        
+
+                        # =================================================
+                        # VERIFY BUTTON
+                        # =================================================
                         if st.button("Verify & Update Password", use_container_width=True):
-                            
 
-                            if otp_code and new_password and confirm_password:
-
-                                if new_password == confirm_password:
-
-                                    with st.spinner("Verifying code and updating password..."):
-
-                                        success = verify_otp_and_update_password(
-                                            st.session_state.reset_email_value,
-                                            otp_code.strip(),
-                                            new_password.strip()
-                                        )
-
-                                        if success:
-                                            st.success("Password updated successfully!")
-                                            st.balloons()
-
-                                            # RESET EVERYTHING CLEANLY
-                                            st.session_state.auth_mode = "signin"
-                                            st.session_state.reset_step = "request"
-                                            st.session_state.reset_email_value = ""
-
-                                            # reset timer
-                                            st.session_state.otp_timer_start = 0
-
-                                            st.rerun()
-
-                                        else:
-                                            st.error("Invalid or expired OTP code. Please try again.")
-
-                                else:
-                                    st.error("Passwords do not match.")
-
-                            else:
+                            if not otp_code or not new_password or not confirm_password:
                                 st.warning("Please fill out all fields.")
 
-                        # ---------------- BACK BUTTON ----------------
-                        if st.button("← Request New Code", use_container_width=True):
-                            st.session_state.reset_step = "request"
-                            st.session_state.reset_email_value = ""
-                            st.rerun()
+                            elif new_password != confirm_password:
+                                st.error("Passwords do not match.")
 
+                            else:
+                                with st.spinner("Verifying code and updating password..."):
+
+                                    success = verify_otp_and_update_password(
+                                        st.session_state.reset_email_value,
+                                        otp_code.strip(),
+                                        new_password.strip()
+                                    )
+
+                                    if success:
+                                        st.success("Password updated successfully!")
+                                        st.balloons()
+
+                                        # RESET EVERYTHING
+                                        st.session_state.auth_mode = "signin"
+                                        st.session_state.reset_step = "request"
+                                        st.session_state.reset_email_value = ""
+                                        st.session_state.otp_timer_start = 0
+
+                                        st.rerun()
+
+                                    else:
+                                        st.error("Invalid or expired OTP code.")
+
+
+                        # =================================================
+                        # RESEND SECTION (FIXED - NO BUGS)
+                        # =================================================
+                        st.markdown("---")
+                        st.subheader("Need a new code?")
+
+                        if st.button("Resend OTP", use_container_width=True):
+
+                            if not can_request_otp():
+                                st.warning("Please wait 1 minute before requesting a new code.")
+
+                            else:
+                                with st.spinner("Sending new code..."):
+
+                                    success = send_reset_otp(st.session_state.reset_email_value)
+
+                                    if success:
+                                        st.success("New OTP sent! Check your email.")
+
+                                        # restart cooldown timer
+                                        st.session_state.otp_timer_start = time.time()
+
+                                        st.rerun()
+
+                                    else:
+                                        st.error("Failed to resend OTP")
 
                 # =================================================
                 #                   SIGN IN
