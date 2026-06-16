@@ -1,36 +1,4 @@
-# from database import supabase
-# import streamlit as st
 
-
-# #-------------SIGN UP -----------------
-# def sign_up(email, password):
-#     try:
-#         response = supabase.auth.sign_up({
-#             "email": email,
-#             "password": password
-#         })
-#         return response
-#     except Exception as e:
-#         st.error(f'Signup Error:{e}')
-
-# #------------Login------------------
-# def login(email, password):
-#     try:
-#         response = supabase.auth.sign_in_with_password({
-#         "email": email,
-#         "password": password
-#         })
-        
-#         if response.user:
-#             st.session_state["user"] = response.user
-#             return True
-#     except Exception as e:
-#         st.error(f'Login Error: {e}')
-#     return False
-
-# #---------------LOGOUT----------------
-# def logout():
-#     st.session_state['user'] = None
 
 
 
@@ -57,16 +25,33 @@ def sign_up(email, password, full_name):
         # ------------------ CREATE AUTH USER ------------------
         response = supabase.auth.sign_up({
             "email": email,
-            "password": password
+            "password": password,
+            "options": {
+                "data": {
+                    "full_name": full_name
+                }
+            }
         })
 
-        # ------------------ SAVE PROFILE ------------------
         if response.user:
+
+            # Save profile information
             supabase.table("profiles").insert({
                 "id": response.user.id,
                 "email": email,
                 "full_name": full_name
             }).execute()
+
+            # Save default role
+            supabase.table("user_roles").insert({
+                "id": response.user.id,
+                "email": email,
+                "role": "user"
+            }).execute()
+
+            st.session_state["user"] = response.user
+            st.session_state["role"] = "user"
+            st.session_state["full_name"] = full_name or ""
 
         return response
 
@@ -84,16 +69,24 @@ def login(email, password):
         })
 
         if response.user and response.session:
+            st.session_state["user"] = None
+            st.session_state["session"] = None
+            st.session_state["role"] = "user"
+            st.session_state["full_name"] = ""
+
             st.session_state["user"] = response.user
             st.session_state["session"] = response.session  
 
             # role logic - fetch role from database and store in session state
-            role = get_user_role(response.user.email)
+            role = get_user_role(response.user.id)
             st.session_state["role"] = role
-            full_name = get_user_name(response.user.email)
-            st.session_state["full_name"] = full_name
+            full_name = get_user_name(response.user.id)
+            st.session_state["full_name"] = full_name or ""
 
+
+            st.session_state["active_user_id"] = response.user.id
             return True
+        
 
         return False
 
@@ -112,7 +105,8 @@ def logout():
     st.session_state["user"] = None
     st.session_state["session"] = None
     st.session_state["role"] = "user"
-    st.session_state["full_name"] = None
+    st.session_state["full_name"] = ""
+    st.session_state["active_user_id"] = None
     st.rerun()
 
 
@@ -148,5 +142,5 @@ def verify_otp_and_update_password(email, token, new_password):
         print(f"Verification backend error: {e}")
         return False
 
-def can_resend_otp(timer_start, cooldown):
-    return time.time() - timer_start > cooldown
+def can_request_otp():
+    return (time.time() - st.session_state.otp_timer_start) >= st.session_state.otp_cooldown

@@ -66,19 +66,22 @@ def get_all_predictions():
     
 
 #--------------role function----------------
-def get_user_role(email):
+
+def get_user_role(user_id):
     try:
-        clean_email = email.strip().lower()
         response = (
             supabase
             .table("user_roles")
             .select("role")
-            .eq("email", clean_email)
+            .eq("id", user_id)
             .execute()
         )
+
         if response.data:
             return response.data[0]["role"]
-        return "user"  
+
+        # Default role if no record exists
+        return "user"
 
     except Exception as e:
         st.error(f"Failed to fetch user role: {e}")
@@ -103,11 +106,10 @@ def save_feedback(user_email, feedback):
         st.error(f"Feedback Error: {e}")
 
 
-def get_user_name(email):
-
+def get_user_name(user_id):
     result = supabase.table("profiles") \
         .select("full_name") \
-        .eq("email", email) \
+        .eq("id", user_id) \
         .single() \
         .execute()
 
