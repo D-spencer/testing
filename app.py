@@ -50,6 +50,7 @@ hide_streamlit_style = """
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
+
 # #-----------------Hide Side bar---------------------------
 # ---------------- SESSION STATE INIT ----------------
 
@@ -239,23 +240,132 @@ def auth_page():
 
     with col2:
         with stylable_container(
-            key="auth_box",
-            css_styles="""
-                {
-            
-          background-color: var(--secondary-background-color); 
+        key="auth_box",
+        css_styles="""
+        {
+
+            /* Default (dark mode fallback) */
+            background-color: var(--secondary-background-color);
             padding: 40px;
             border-radius: 25px;
             box-shadow: 0px 10px 40px rgba(0,0,0,0.2);
-            border: 1px solid rgba(128, 128, 128, 0.2);
+            border: 1px solid rgba(128,128,128,0.2);
+
         }
 
-        /* Target ONLY the email input using its unique key */
+        /* =====================================
+        LIGHT MODE
+        ===================================== */
+        @media (prefers-color-scheme: light) {
+
+            .st-key-st-key-auth_box {
+                background: white !important;
+                border-radius: 25px !important;
+                padding: 40px !important;
+                border: 1px solid #dee2e6 !important;
+            }
+
+            /* Form */
+            [data-testid="stForm"] {
+                background: #ffffff !important;
+                color: #262730 !important;
+                border: 1px solid #dee2e6 !important;
+                border-top: none !important;
+                border-top-left-radius: 0px !important;
+                border-top-right-radius: 0px !important;
+            }
+
+            /* Labels */
+            [data-testid="stForm"] label,
+            [data-testid="stForm"] [data-testid="stWidgetLabel"] p {
+                color: #262730 !important;
+            }
+
+            /* Inputs */
+            [data-testid="stForm"] input[type="text"],
+            [data-testid="stForm"] input[type="password"],
+            [data-testid="stForm"] input[type="email"] {
+                background: #f8f9fa !important;
+                color: #262730 !important;
+                border: 1px solid #dee2e6 !important;
+            }
+
+            /* Placeholders */
+            [data-testid="stForm"] input::placeholder {
+                color: rgba(38,39,48,0.6) !important;
+            }
+        }
+
+        /* =====================================
+        DARK MODE
+        ===================================== */
+        @media (prefers-color-scheme: dark) {
+        /* Target form containers */
+        [data-testid="stForm"] {
+            background: var(--st-secondary-background-color, #0e1117) !important;
+            color: var(--st-text-color, #fafafa) !important;
+            border: 1px solid var(--st-border-color, #262730) !important;
+        }
+
+        .st-key-st-key-auth_box {
+            background: var(--st-secondary-background-color, #0e1117) !important;
+            border-radius: 25px !important;
+            border: 1px solid var(--st-border-color, #262730) !important;
+        }
+
+        /* Target text and labels inside forms AND their containers */
+        [data-testid="stForm"] .stMarkdown,
+        [data-testid="stForm"] .stText,
+        [data-testid="stForm"] label,
+        [data-testid="stForm"] [data-testid="stWidgetLabel"] p,
+        [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) .stMarkdown,
+        [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) .stText,
+        [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) label,
+        [data-testid="column"]:has([data-testid="stForm"]) .stMarkdown,
+        [data-testid="column"]:has([data-testid="stForm"]) .stText,
+        [data-testid="column"]:has([data-testid="stForm"]) label {
+            color: var(--st-text-color, #fafafa) !important;
+        }
+
+        /* Target input placeholders inside forms */
+        [data-testid="stForm"] input::placeholder,
+        [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input::placeholder,
+        [data-testid="column"]:has([data-testid="stForm"]) input::placeholder {
+            color: rgba(250, 250, 250, 0.6) !important;
+        }
+
+        /* Target input fields inside forms and containers */
+        [data-testid="stForm"] input[type="text"],
+        [data-testid="stForm"] input[type="password"],
+        [data-testid="stForm"] input[type="email"],
+        [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="text"],
+        [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="password"],
+        [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="email"],
+        [data-testid="column"]:has([data-testid="stForm"]) input[type="text"],
+        [data-testid="column"]:has([data-testid="stForm"]) input[type="password"],
+        [data-testid="column"]:has([data-testid="stForm"]) input[type="email"] {
+            background: var(--st-background-color, #0e1117) !important;
+            color: var(--st-text-color, #fafafa) !important;
+            border: 1px solid var(--st-border-color, #262730) !important;
+        }
+
+        /* If you're using custom glass-card class for containers */
+        .glass-card:has([data-testid="stForm"]) {
+            background: var(--st-secondary-background-color, #0e1117) !important;
+            color: var(--st-text-color, #fafafa) !important;
+            border: 1px solid var(--st-border-color, #262730) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        }
+    }
+        /* =====================================
+        EMAIL + PASSWORD JOIN EFFECT
+        ===================================== */
+
         div[data-testid="stVerticalBlock"] > div:has(input[key="auth_email"]) {
-            width: calc(100% - 2px) !important; /* Adjust this slightly if needed */
+            width: calc(100% - 2px) !important;
             margin-left: auto !important;
             margin-right: auto !important;
-            margin-bottom: -32px !important; /* Keeps the 'joined' look */
+            margin-bottom: -32px !important;
         }
 
         input[key="auth_email"] {
@@ -264,14 +374,13 @@ def auth_page():
             border-bottom: none !important;
         }
 
-        /* Ensure the form below is also centered and matching */
         [data-testid="stForm"] {
             border-top: none !important;
             border-top-left-radius: 0px !important;
             border-top-right-radius: 0px !important;
-            }
-            """,
-        ):
+        }
+        """,
+    ):
                 if st.session_state.auth_mode == "otp_reset":
 
                     st.markdown('<div class="title">Reset Password via OTP</div>', unsafe_allow_html=True)
