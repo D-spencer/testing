@@ -1,4 +1,8 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700&display=swap');
+
+
+
 
 /* ==========================================
    GLOBAL APP & TYPOGRAPHY STYLES
@@ -20,6 +24,10 @@ html, body, [class*="css"]  {
     background-attachment: fixed;
     color: white;
 }
+
+
+
+
 
 @keyframes gradient {
     0% {background-position: 0% 50%;}
@@ -461,3 +469,133 @@ div[data-testid="stVerticalBlock"]:has(> .auth-box),
     }
 }
 
+
+/* Light mode fix for forms AND their containers */
+@media (prefers-color-scheme: light) {
+    /* Target form containers */
+    [data-testid="stForm"] {
+        background: #ffffff !important;
+        color: #262730 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    /* Target any container that contains a form */
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]),
+    [data-testid="column"]:has([data-testid="stForm"]),
+    .element-container:has([data-testid="stForm"]) {
+        background: #ffffff !important;
+        border-radius: 16px !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    /* Target text and labels inside forms AND their containers */
+    [data-testid="stForm"] .stMarkdown,
+    [data-testid="stForm"] .stText,
+    [data-testid="stForm"] label,
+    [data-testid="stForm"] [data-testid="stWidgetLabel"] p,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) .stMarkdown,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) .stText,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) label,
+    [data-testid="column"]:has([data-testid="stForm"]) .stMarkdown,
+    [data-testid="column"]:has([data-testid="stForm"]) .stText,
+    [data-testid="column"]:has([data-testid="stForm"]) label {
+        color: #262730 !important;
+    }
+
+    /* Target input placeholders inside forms */
+    [data-testid="stForm"] input::placeholder,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input::placeholder,
+    [data-testid="column"]:has([data-testid="stForm"]) input::placeholder {
+        color: rgba(38, 39, 48, 0.6) !important;
+    }
+
+    /* Target input fields inside forms and containers */
+    [data-testid="stForm"] input[type="text"],
+    [data-testid="stForm"] input[type="password"],
+    [data-testid="stForm"] input[type="email"],
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="text"],
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="password"],
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="email"],
+    [data-testid="column"]:has([data-testid="stForm"]) input[type="text"],
+    [data-testid="column"]:has([data-testid="stForm"]) input[type="password"],
+    [data-testid="column"]:has([data-testid="stForm"]) input[type="email"] {
+        background: #f8f9fa !important;
+        color: #262730 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+
+    /* If you're using custom glass-card class for containers */
+    .glass-card:has([data-testid="stForm"]) {
+        background: #ffffff !important;
+        color: #262730 !important;
+        border: 1px solid #dee2e6 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    }
+}
+
+
+
+
+
+/* Dark mode fix for forms AND their containers */
+@media (prefers-color-scheme: dark) {
+    /* Target form containers */
+    [data-testid="stForm"] {
+        background: var(--st-secondary-background-color, #0e1117) !important;
+        color: var(--st-text-color, #fafafa) !important;
+        border: 1px solid var(--st-border-color, #262730) !important;
+    }
+
+    /* Target any container that contains a form */
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]),
+    [data-testid="column"]:has([data-testid="stForm"]),
+    .element-container:has([data-testid="stForm"]) {
+        background: var(--st-secondary-background-color, #0e1117) !important;
+        border-radius: 16px !important;
+        border: 1px solid var(--st-border-color, #262730) !important;
+    }
+
+    /* Target text and labels inside forms AND their containers */
+    [data-testid="stForm"] .stMarkdown,
+    [data-testid="stForm"] .stText,
+    [data-testid="stForm"] label,
+    [data-testid="stForm"] [data-testid="stWidgetLabel"] p,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) .stMarkdown,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) .stText,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) label,
+    [data-testid="column"]:has([data-testid="stForm"]) .stMarkdown,
+    [data-testid="column"]:has([data-testid="stForm"]) .stText,
+    [data-testid="column"]:has([data-testid="stForm"]) label {
+        color: var(--st-text-color, #fafafa) !important;
+    }
+
+    /* Target input placeholders inside forms */
+    [data-testid="stForm"] input::placeholder,
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input::placeholder,
+    [data-testid="column"]:has([data-testid="stForm"]) input::placeholder {
+        color: rgba(250, 250, 250, 0.6) !important;
+    }
+
+    /* Target input fields inside forms and containers */
+    [data-testid="stForm"] input[type="text"],
+    [data-testid="stForm"] input[type="password"],
+    [data-testid="stForm"] input[type="email"],
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="text"],
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="password"],
+    [data-testid="stVerticalBlock"]:has([data-testid="stForm"]) input[type="email"],
+    [data-testid="column"]:has([data-testid="stForm"]) input[type="text"],
+    [data-testid="column"]:has([data-testid="stForm"]) input[type="password"],
+    [data-testid="column"]:has([data-testid="stForm"]) input[type="email"] {
+        background: var(--st-background-color, #0e1117) !important;
+        color: var(--st-text-color, #fafafa) !important;
+        border: 1px solid var(--st-border-color, #262730) !important;
+    }
+
+    /* If you're using custom glass-card class for containers */
+    .glass-card:has([data-testid="stForm"]) {
+        background: var(--st-secondary-background-color, #0e1117) !important;
+        color: var(--st-text-color, #fafafa) !important;
+        border: 1px solid var(--st-border-color, #262730) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+    }
+}

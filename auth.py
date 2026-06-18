@@ -100,13 +100,20 @@ def logout():
     try:
         supabase.auth.sign_out()
     except Exception:
-        pass 
-    
+        pass
+
     st.session_state["user"] = None
     st.session_state["session"] = None
     st.session_state["role"] = "user"
     st.session_state["full_name"] = ""
     st.session_state["active_user_id"] = None
+
+    # Reset forgot-password flow
+    st.session_state.auth_mode = "signin"
+    st.session_state.reset_step = "request"
+    st.session_state.reset_email_value = ""
+    st.session_state.otp_timer_start = 0
+
     st.rerun()
 
 
@@ -144,3 +151,5 @@ def verify_otp_and_update_password(email, token, new_password):
 
 def can_request_otp():
     return (time.time() - st.session_state.otp_timer_start) >= st.session_state.otp_cooldown
+
+

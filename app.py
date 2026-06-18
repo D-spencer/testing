@@ -4,17 +4,51 @@ from nav.tb_page import show_tb_page
 from nav.hiv_page import show_hiv_page
 from auth import sign_up, login, logout, send_reset_otp, verify_otp_and_update_password,can_request_otp
 from database import supabase, get_user_role, save_feedback, get_user_name
-from streamlit_autorefresh import st_autorefresh
 from streamlit_extras.stylable_container import stylable_container
 
 
 
-
-
-
-
 # Page config
-st.set_page_config(page_title='Disease Prediction App' , layout='wide' , initial_sidebar_state='collapsed')
+st.set_page_config(page_title="Disease Prediction App", layout="wide", initial_sidebar_state="collapsed")
+
+# Hide default Streamlit elements (but keep sidebar toggle functionality)
+hide_streamlit_style = """
+    <style>
+    /* Hide the main menu (hamburger menu) but keep sidebar toggle */
+    #MainMenu {visibility: hidden;}
+
+    /* Hide the footer */
+    footer {visibility: hidden;}
+
+    /* Hide the "Made with Streamlit" footer */
+    .css-1d391kg {visibility: hidden;}
+
+    /* Hide the three-dot menu in the top right */
+    button[title="View fullscreen"] {visibility: hidden;}
+
+    /* Hide the GitHub icon and other toolbar items */
+    .css-14xtw13.e8zbici0 {visibility: hidden;}
+
+    /* Hide toolbar elements but preserve sidebar controls */
+    [data-testid="stDecoration"] {visibility: hidden;}
+
+    /* Show status widget (includes running indicator) */
+    [data-testid="stStatusWidget"] {visibility: visible !important;}
+
+    /* Hide settings menu */
+    button[kind="header"] {visibility: hidden;}
+
+    /* Keep sidebar toggle button visible */
+    button[data-testid="collapsedControl"] {visibility: visible !important;}
+
+    /* Keep the sidebar toggle area visible */
+    [data-testid="stSidebarNav"] {visibility: visible !important;}
+
+    /* Ensure sidebar toggle button is accessible */
+    .css-1544g2n {visibility: visible !important;}
+    </style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # #-----------------Hide Side bar---------------------------
 # ---------------- SESSION STATE INIT ----------------
@@ -292,12 +326,28 @@ def auth_page():
                     # =================================================
                     elif st.session_state.reset_step == "verify":
 
-                        st.markdown('<div class="subtitle">Enter OTP and new password</div>', unsafe_allow_html=True)
+                        st.markdown(
+                            '<div class="subtitle">Enter OTP and new password</div>',
+                            unsafe_allow_html=True
+                        )
 
-                        otp_code = st.text_input("Enter 6-digit OTP Code", max_chars=6, placeholder="000000")
-                        new_password = st.text_input("New Password", type="password", placeholder="Enter new password")
-                        confirm_password = st.text_input("Confirm New Password", type="password", placeholder="Confirm new password")
+                        otp_code = st.text_input(
+                            "Enter 6-digit OTP Code",
+                            max_chars=6,
+                            placeholder="000000"
+                        )
 
+                        new_password = st.text_input(
+                            "New Password",
+                            type="password",
+                            placeholder="Enter new password"
+                        )
+
+                        confirm_password = st.text_input(
+                            "Confirm New Password",
+                            type="password",
+                            placeholder="Confirm new password"
+                        )
 
                         # =================================================
                         # VERIFY BUTTON
@@ -320,7 +370,9 @@ def auth_page():
                                     )
 
                                     if success:
-                                        st.success("Password updated successfully!")
+                                        st.success(
+                                            "Password updated successfully! Please sign in with your new password."
+                                        )
                                         st.balloons()
 
                                         # RESET EVERYTHING
@@ -332,11 +384,10 @@ def auth_page():
                                         st.rerun()
 
                                     else:
-                                        st.error("Invalid or expired OTP code.")
-
+                                        st.error("try the verify button again or Invalid/expired OTP code.")
 
                         # =================================================
-                        # RESEND SECTION (FIXED - NO BUGS)
+                        # RESEND SECTION
                         # =================================================
                         st.markdown("---")
                         st.subheader("Need a new code?")
@@ -349,18 +400,42 @@ def auth_page():
                             else:
                                 with st.spinner("Sending new code..."):
 
-                                    success = send_reset_otp(st.session_state.reset_email_value)
+                                    success = send_reset_otp(
+                                        st.session_state.reset_email_value
+                                    )
 
                                     if success:
                                         st.success("New OTP sent! Check your email.")
 
-                                        # restart cooldown timer
+                                        # Restart cooldown timer
                                         st.session_state.otp_timer_start = time.time()
 
                                         st.rerun()
 
                                     else:
-                                        st.error("Failed to resend OTP")
+                                        st.error("Failed to resend OTP.")
+
+                        # =================================================
+                        # CHANGE EMAIL
+                        # =================================================
+                        if st.button("Use Another Email", use_container_width=True):
+
+                            st.session_state.reset_step = "request"
+                            st.session_state.reset_email_value = ""
+
+                            st.rerun()
+
+                        # =================================================
+                        # BACK TO SIGN IN
+                        # =================================================
+                        if st.button("← Back to Sign In", use_container_width=True):
+
+                            st.session_state.auth_mode = "signin"
+                            st.session_state.reset_step = "request"
+                            st.session_state.reset_email_value = ""
+                            st.session_state.otp_timer_start = 0
+
+                            st.rerun()
 
                 # =================================================
                 #                   SIGN IN
@@ -610,9 +685,9 @@ def dashboard():
                 st.rerun()
 
 
-    # =========================================================
-    # 👀 VISUAL INDICATOR (ALWAYS SHOWN)
-    # =========================================================
+    # # =========================================================
+    # # 👀 VISUAL INDICATOR (ALWAYS SHOWN)
+    # # =========================================================
     # st.segmented_control(
     #     "Current Selection",
     #     options=disease_options,
@@ -655,7 +730,7 @@ def dashboard():
         else:
             st.warning("Please enter your feedback first")
 
-    
+    st.divider()
     st.markdown("""
     <br><br>
     <div style='text-align:center; color:white; opacity:0.7;'>
