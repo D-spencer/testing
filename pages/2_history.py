@@ -3,6 +3,8 @@ import pandas as pd
 from auth import logout
 from database import get_prediction_history
 
+
+
 if st.session_state.get("user") is None:
     st.warning("You have been logged out. Please log in again from the home page.")
     st.stop()  
@@ -28,7 +30,7 @@ if "user" not in st.session_state:
 
 
 # ---------------- PAGE TITLE ----------------
-st.title("📊 Your Prediction History")
+st.title("Your Prediction History")
 
 
 # ---------------- GET USER DATA ----------------
@@ -115,7 +117,7 @@ else:
     csv = df.to_csv(index=False)
 
     st.download_button(
-        label="Download History CSV",
+        label="Download History",
         data=csv,
         file_name="prediction_history.csv",
         mime="text/csv"

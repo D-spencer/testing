@@ -5,6 +5,8 @@ import plotly.express as px
 from auth import logout
 
 
+
+
 if st.session_state.get("user") is None:
     st.warning("You have been logged out. Please log in again from the home page.")
     st.stop()  # Aborts running the rest of the page instantly
