@@ -8,61 +8,61 @@ from streamlit_extras.stylable_container import stylable_container
 
 
 
-st.markdown("""
-<style>
-/* FORCE FULL SCREEN BACKGROUND LAYER */
-body {
-    overflow-x: hidden;
-}
+# st.markdown("""
+# <style>
+# /* FORCE FULL SCREEN BACKGROUND LAYER */
+# body {
+#     overflow-x: hidden;
+# }
 
-/* animated glow layer */
-.animated-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: -9999;
-    pointer-events: none;
-    overflow: hidden;
-}
+# /* animated glow layer */
+# .animated-bg {
+#     position: fixed;
+#     top: 0;
+#     left: 0;
+#     width: 100vw;
+#     height: 100vh;
+#     z-index: -9999;
+#     pointer-events: none;
+#     overflow: hidden;
+# }
 
-/* glow circles */
-.glow {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    border-radius: 50%;
-    filter: blur(140px);
-    opacity: 0.5;
-    animation: moveGlow 14s infinite ease-in-out;
-}
+# /* glow circles */
+# .glow {
+#     position: absolute;
+#     width: 600px;
+#     height: 600px;
+#     border-radius: 50%;
+#     filter: blur(140px);
+#     opacity: 0.5;
+#     animation: moveGlow 14s infinite ease-in-out;
+# }
 
-.glow1 {
-    background: #6c2bd9;
-    top: 10%;
-    left: 10%;
-}
+# .glow1 {
+#     background: #6c2bd9;
+#     top: 10%;
+#     left: 10%;
+# }
 
-.glow2 {
-    background: #00bcd4;
-    bottom: 10%;
-    right: 10%;
-    animation-delay: 7s;
-}
+# .glow2 {
+#     background: #00bcd4;
+#     bottom: 10%;
+#     right: 10%;
+#     animation-delay: 7s;
+# }
 
-@keyframes moveGlow {
-    0% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(120px,-80px) scale(1.2); }
-    100% { transform: translate(0,0) scale(1); }
-}
-</style>
+# @keyframes moveGlow {
+#     0% { transform: translate(0,0) scale(1); }
+#     50% { transform: translate(120px,-80px) scale(1.2); }
+#     100% { transform: translate(0,0) scale(1); }
+# }
+# </style>
 
-<div class="animated-bg">
-    <div class="glow glow1"></div>
-    <div class="glow glow2"></div>
-</div>
-""", unsafe_allow_html=True)
+# <div class="animated-bg">
+#     <div class="glow glow1"></div>
+#     <div class="glow glow2"></div>
+# </div>
+# """, unsafe_allow_html=True)
 
 # Page config
 st.set_page_config(page_title="Disease Prediction App", layout="wide", initial_sidebar_state="collapsed")
