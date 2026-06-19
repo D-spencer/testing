@@ -8,6 +8,62 @@ from streamlit_extras.stylable_container import stylable_container
 
 
 
+st.markdown("""
+<style>
+/* FORCE FULL SCREEN BACKGROUND LAYER */
+body {
+    overflow-x: hidden;
+}
+
+/* animated glow layer */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -9999;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* glow circles */
+.glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(140px);
+    opacity: 0.5;
+    animation: moveGlow 14s infinite ease-in-out;
+}
+
+.glow1 {
+    background: #6c2bd9;
+    top: 10%;
+    left: 10%;
+}
+
+.glow2 {
+    background: #00bcd4;
+    bottom: 10%;
+    right: 10%;
+    animation-delay: 7s;
+}
+
+@keyframes moveGlow {
+    0% { transform: translate(0,0) scale(1); }
+    50% { transform: translate(120px,-80px) scale(1.2); }
+    100% { transform: translate(0,0) scale(1); }
+}
+</style>
+
+<div class="animated-bg">
+    <div class="glow glow1"></div>
+    <div class="glow glow2"></div>
+</div>
+""", unsafe_allow_html=True)
+
 # Page config
 st.set_page_config(page_title="Disease Prediction App", layout="wide", initial_sidebar_state="collapsed")
 
@@ -716,30 +772,59 @@ def dashboard():
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         }
 
-        /* 🛠 FIXED OVERLAPPING SPACE */
-        /* Adds a dedicated top margin to the segmented control block now that the label is gone */
-        div[data-testid="stSegmentedControl"] {
-            margin-top: 12px !important; 
-            background-color: rgba(255, 255, 255, 0.04) !important;
-            border-radius: 8px;
+        /* ===========================
+        iOS STYLE SEGMENTED CONTROL
+        =========================== */
+
+        div[data-baseweb="button-group"] {
+            position: relative;
+            background: rgba(0,0,0,0.05) !important;
+            border-radius: 12px;
             padding: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            width: 100%;
-        }
-        
-        div[data-testid="stSegmentedControl"] button {
-            background-color: transparent !important;
-            color: #a3a3c2 !important;
-            border: none !important;
-        }
-        
-        div[data-testid="stSegmentedControl"] button[aria-checked="true"] {
-            background-color: rgba(239, 68, 68, 0.2) !important;
-            color: #ef4444 !important;
-            border: 1px solid rgba(239, 68, 68, 0.4) !important;
-            border-radius: 6px;
+            border: 1px solid rgba(0,0,0,0.08);
+            display: flex;
+            overflow: hidden;
         }
 
+        /* ALL BUTTONS */
+        div[data-baseweb="button-group"] button {
+            flex: 1;
+            background: transparent !important;
+            color: #444 !important;
+            border: none !important;
+            z-index: 2;
+            transition: color 0.25s ease;
+        }
+
+        /* HIDE STREAMLIT ACTIVE STYLE */
+        div[data-baseweb="button-group"] button[data-testid="stBaseButton-segmented_controlActive"] {
+            background: transparent !important;
+            color: #7b2cff !important;
+        }
+
+        /* SLIDING INDICATOR */
+        div[data-baseweb="button-group"]::before {
+            content: "";
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: calc(50% - 4px);
+            height: calc(100% - 8px);
+            background: rgba(123, 44, 255, 0.25);
+            border-radius: 10px;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+            z-index: 1;
+        }
+
+        /* MOVE SLIDER WHEN SECOND BUTTON IS ACTIVE */
+        div[data-baseweb="button-group"]:has(button[data-testid="stBaseButton-segmented_controlActive"]:nth-child(2))::before {
+            transform: translateX(100%);
+        }
+
+        /* HOVER */
+        div[data-baseweb="button-group"] button:hover {
+            background: rgba(123, 44, 255, 0.08) !important;
+        }
         @media (max-width: 768px) {
             {
                 align-items: center !important;
@@ -770,9 +855,18 @@ def dashboard():
                 key="quick_switch_widget"
             )
             
+            # if selected is not None and selected != st.session_state.page:
+            #     st.session_state.page = selected
+            #     st.query_params["page"] = selected
+            #     st.rerun()
+
+
             if selected is not None and selected != st.session_state.page:
                 st.session_state.page = selected
-                st.query_params["page"] = selected
+
+                if st.query_params.get("page") != selected:
+                    st.query_params["page"] = selected
+
                 st.rerun()
 
     # =========================================================
@@ -816,7 +910,7 @@ def dashboard():
 
 
 
-
+    st.markdown("<br>", unsafe_allow_html=True)
 
     # --- Feedback section stays underneath ---
     st.badge("Feedback or Comment", color="primary", icon="💬")
