@@ -357,12 +357,14 @@ def show_tb_page():
     #     '<div class="section-title">TB Prediction</div>',
     #     unsafe_allow_html=True
     # )
-    st.title(':blue[Tuberculosis Prediction]', text_alignment="center")
+    # st.title(':blue[Tuberculosis Prediction]', text_alignment="center")
+    st.title(":color[Tuberculosis Prediction]{foreground='white'}", text_alignment="center")
     st.write("Fill in the questionnaire below.")
 
     # We will store answers in a dictionary to easily validate them
     answers = {}
 
+    
     with stylable_container(
         key="tb_card",
         css_styles="""
@@ -383,31 +385,60 @@ def show_tb_page():
         }
         """
     ):
-        
-        col1, col2, col3 = st.columns([1, 1, 1], gap="large")
 
-        with col1: 
-            answers['fever'] = yes_no('Have you had fever for more than 2 weeks ')
-            answers['cough_blood'] = yes_no('Are you coughing blood')
-            answers['night_sweat'] = yes_no('Do you experience night sweats')
-            answers['chest_pain'] = yes_no('Do you have a chest pain')
-            
+        # =========================
+        # GENERAL SYMPTOMS
+        # =========================
+        st.subheader(":blue[General Symptoms]")
         st.markdown("<br>", unsafe_allow_html=True)
-        
+        col1, col2 = st.columns(2)
+
+        with col1:
+            answers['fever'] = yes_no('Have you had fever for more than 2 weeks?')
+            answers['night_sweat'] = yes_no('Do you experience night sweats?')
+            answers['weight_loss'] = yes_no('Have you experienced unexplained weight loss recently?')
+
         with col2:
-            answers['back_pain'] = yes_no('Do you have a back pain')
-            answers['sputum'] = yes_no('Is your sputum or mucus mixed with blood')
-            answers['breath_shortness'] = yes_no('Do you experience shortness of breath')
-            answers['weight_loss'] = yes_no('Have you experience unexplained weight loss recently')
-            
+            answers['body_feel_tired'] = yes_no('Do you often feel unusually tired or weak?')
+            answers['loss_of_appetite'] = yes_no('Have you experienced loss of appetite recently?')
+
+        st.divider()
+
+        # =========================
+        # RESPIRATORY SYMPTOMS
+        # =========================
+        st.subheader(":blue[Respiratory Symptoms]")
         st.markdown("<br>", unsafe_allow_html=True)
-        
-        with col3:
-            answers['body_feel_tired'] = yes_no('Do you often feel unusually tired or weak')
-            answers['lumps'] = yes_no('Have you noticed any lumps or swellimg on your body')
-            answers['continuous_cough'] = yes_no('Have you had a continuous cough with phlegm')
-            answers['swollen_lymph_nodes'] = yes_no('Do you have swollen lymph nodes')
-            answers['loss_of_appetite'] = yes_no('Have you experienced loss of appetite recently')
+        col1, col2 = st.columns(2)
+
+        with col1:
+            answers['continuous_cough'] = yes_no('Have you had a continuous cough with phlegm?')
+            answers['cough_blood'] = yes_no('Are you coughing blood?')
+            answers['sputum'] = yes_no('Is your sputum or mucus mixed with blood?')
+
+        with col2:
+            answers['breath_shortness'] = yes_no('Do you experience shortness of breath?')
+            answers['chest_pain'] = yes_no('Do you have chest pain?')
+
+        st.divider()
+
+        # =========================
+        # OTHER PHYSICAL SYMPTOMS
+        # =========================
+        st.subheader(":blue[Other Physical Symptoms]")
+        st.markdown("<br>", unsafe_allow_html=True)
+        col1, col2 = st.columns(2)
+
+        with col1:
+            answers['back_pain'] = yes_no('Do you have back pain?')
+            answers['lumps'] = yes_no('Have you noticed any lumps or swelling on your body?')
+
+        with col2:
+            answers['swollen_lymph_nodes'] = yes_no('Do you have swollen lymph nodes?')
+
+
+   
+
 
     # When they click the prediction button, check everything first!
     if st.button('Run Prediction'):
