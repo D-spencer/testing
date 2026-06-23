@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 from database import supabase, get_user_role, get_user_name
 import streamlit as st
 import time
@@ -14,7 +6,7 @@ import time
 # ---------------- SIGN UP ----------------
 def sign_up(email, password, full_name):
     try:
-        # Sanitize data at the backend boundary
+        # Sanitize data
         email = email.strip()
         password = password.strip()
         full_name = full_name.strip()

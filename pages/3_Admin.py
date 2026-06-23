@@ -117,7 +117,7 @@ if not filtered_df.empty:
         pull=[0.1 if i == 0 else 0.02 for i in range(len(disease_counts))]
     )
     fig.update_layout(
-        # 1. Style the Title color explicitly
+       
         title={
         'font': {
             'color': '#FFFFFF',
@@ -144,7 +144,7 @@ if not filtered_df.empty:
          xaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
-        gridcolor="rgba(255, 255, 255, 0.1)", # Subtle white grid lines instead of dark ones
+        gridcolor="rgba(255, 255, 255, 0.1)",
         linecolor="rgba(255, 255, 255, 0.2)"
         ),
         legend = dict(
@@ -156,8 +156,8 @@ if not filtered_df.empty:
             font=dict(color="#FFFFFF")
         ),
         modebar=dict(
-        activecolor="#FFD700",  # Beautiful gold color when hovering over an icon
-        color="#FFFFFF",        # Base white color for the icons so they are highly visible
+        activecolor="#FFD700",  
+        color="#FFFFFF",       
         bgcolor="rgba(0, 0, 0, 0)" # Keeps the toolbar background completely transparent
         )   
     )
@@ -184,11 +184,11 @@ if not filtered_df.empty:
         title="Prediction Outcome Distribution",
         text_auto=True,
     )
-    # Apply the modern visibility theme directly to the bar chart
+   
     fig.update_layout(
     # Make all general text white (title, legend, etc.)
     font=dict(color="#FFFFFF"),
-    # 1. Style the Title color explicitly
+    
     title={
         'font': {
             'color': '#FFFFFF',
@@ -196,22 +196,22 @@ if not filtered_df.empty:
         }
     },
     
-    # 2. Style the Legend text color explicitly
+   
     legend={
         'font': {
             'color': '#FFFFFF'
         }
     },
     
-    # Format the X-Axis colors (where 'Negative' and 'Positive' labels sit)
+   
     xaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
-        gridcolor="rgba(255, 255, 255, 0.1)",  # Subtle white grid line
+        gridcolor="rgba(255, 255, 255, 0.1)",  
         linecolor="rgba(255, 255, 255, 0.2)"
     ),
     
-    # Format the Y-Axis colors (where the count numbers sit)
+    
     yaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
@@ -223,10 +223,10 @@ if not filtered_df.empty:
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     
-    # Make the hover toolbar icons white and clear
+    
     modebar=dict(
-        activecolor="#FFD700",    # Gold color on icon hover
-        color="#FFFFFF",          # Crisp white icons
+        activecolor="#FFD700",    
+        color="#FFFFFF",          
         bgcolor="rgba(0, 0, 0, 0)"
     )
     )
@@ -253,11 +253,11 @@ if not filtered_df.empty:
         color_discrete_sequence=["#636EFA", "#EF553B"],
     )
 
-    # Apply the modern visibility theme directly to the bar chart
+    
     fig.update_layout(
     # Make all general text white (title, legend, etc.)
     font=dict(color="#FFFFFF"),
-    # 1. Style the Title color explicitly
+
     title={
         'font': {
             'color': '#FFFFFF',
@@ -265,22 +265,22 @@ if not filtered_df.empty:
         }
     },
     
-    # 2. Style the Legend text color explicitly
+   
     legend={
         'font': {
             'color': '#FFFFFF'
         }
     },
     
-    # Format the X-Axis colors (where 'Negative' and 'Positive' labels sit)
+    
     xaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
-        gridcolor="rgba(255, 255, 255, 0.1)",  # Subtle white grid line
+        gridcolor="rgba(255, 255, 255, 0.1)",  
         linecolor="rgba(255, 255, 255, 0.2)"
     ),
     
-    # Format the Y-Axis colors (where the count numbers sit)
+    
     yaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
@@ -288,14 +288,14 @@ if not filtered_df.empty:
         linecolor="rgba(255, 255, 255, 0.2)"
     ),
     
-    # Make the default plot background blocks completely transparent
+   
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     
-    # Make the hover toolbar icons white and clear
+   
     modebar=dict(
-        activecolor="#FFD700",    # Gold color on icon hover
-        color="#FFFFFF",          # Crisp white icons
+        activecolor="#FFD700",   
+        color="#FFFFFF",         
         bgcolor="rgba(0, 0, 0, 0)"
     )
     )
@@ -328,11 +328,11 @@ if not filtered_df.empty:
         template="plotly_white"
     )
 
-    # Apply the theme directly to the line chart
+    
     fig.update_layout(
     # Make all general text white (title, legend, etc.)
     font=dict(color="#FFFFFF"),
-    # 1. Style the Title color explicitly
+    
     title={
         'font': {
             'color': '#FFFFFF',
@@ -347,15 +347,15 @@ if not filtered_df.empty:
         }
     },
     
-    # Format the X-Axis colors (dates/times)
+   
     xaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
-        gridcolor="rgba(255, 255, 255, 0.1)",  # Subtle white grid line
+        gridcolor="rgba(255, 255, 255, 0.1)",  
         linecolor="rgba(255, 255, 255, 0.2)"
     ),
     
-    # Format the Y-Axis colors (user count/values)
+    
     yaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
@@ -363,24 +363,24 @@ if not filtered_df.empty:
         linecolor="rgba(255, 255, 255, 0.2)"
     ),
     
-    # Make the default plot background blocks completely transparent
+    
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     
-    # Make the hover toolbar icons white and clear
+   
     modebar=dict(
-        activecolor="#FFD700",    # Gold color on icon hover
-        color="#FFFFFF",          # Crisp white icons
+        activecolor="#FFD700",   
+        color="#FFFFFF",          
         bgcolor="rgba(0, 0, 0, 0)"
     )
     )
 
-# Optional: Make the hover tooltip contrast beautifully with your background
+
     fig.update_traces(
-    line=dict(width=3), # Make the trend line slightly thicker and cleaner
-    marker=dict(size=8, color="#FFFFFF"), # Emphasize data points with white markers
+    line=dict(width=3), 
+    marker=dict(size=8, color="#FFFFFF"),
     hoverlabel=dict(
-        bgcolor="#090d1f", # Dark background for the pop-up text box
+        bgcolor="#090d1f", 
         font_size=14,
         font_color="#FFFFFF"
     )
@@ -409,11 +409,11 @@ if not filtered_df.empty:
         template="plotly_white"
     )
 
-    # Apply the modern visibility theme directly to the bar chart
+    
     fig.update_layout(
-    # Make all general text white (title, legend, etc.)
+    
     font=dict(color="#FFFFFF"),
-    # 1. Style the Title color explicitly
+  
     title={
         'font': {
             'color': '#FFFFFF',
@@ -421,22 +421,22 @@ if not filtered_df.empty:
         }
     },
     
-    # 2. Style the Legend text color explicitly
+    
     legend={
         'font': {
             'color': '#FFFFFF'
         }
     },
     
-    # Format the X-Axis colors (where 'Negative' and 'Positive' labels sit)
+    
     xaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
-        gridcolor="rgba(255, 255, 255, 0.1)",  # Subtle white grid line
+        gridcolor="rgba(255, 255, 255, 0.1)",  
         linecolor="rgba(255, 255, 255, 0.2)"
     ),
     
-    # Format the Y-Axis colors (where the count numbers sit)
+    
     yaxis=dict(
         title_font=dict(color="#FFFFFF"),
         tickfont=dict(color="#FFFFFF"),
@@ -444,14 +444,14 @@ if not filtered_df.empty:
         linecolor="rgba(255, 255, 255, 0.2)"
     ),
     
-    # Make the default plot background blocks completely transparent
+    
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
     
-    # Make the hover toolbar icons white and clear
+    
     modebar=dict(
-        activecolor="#FFD700",    # Gold color on icon hover
-        color="#FFFFFF",          # Crisp white icons
+        activecolor="#FFD700",    
+        color="#FFFFFF",          
         bgcolor="rgba(0, 0, 0, 0)"
     )
     )
