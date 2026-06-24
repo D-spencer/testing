@@ -8,7 +8,7 @@ supabase = create_client(
     SUPABASE_URL, 
     SUPABASE_KEY)
 
-
+st.write("SUPABASE OBJECT ID:", id(supabase))
 def save_prediction(
         user_email,
         disease,
