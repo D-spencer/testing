@@ -62,10 +62,11 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 def init_session():
     defaults = {
-        "user": None,
-        "role": "user",
-        "session": None,
-        "full_name": "",
+    "user": None,
+    "role": "user",
+    "session": None,
+    "full_name": "",
+    "active_user_id": None
     }
 
     for key, value in defaults.items():
@@ -110,6 +111,16 @@ if not st.session_state.get("session"):
         st.session_state["role"] = "user"
         st.session_state["full_name"] = ""
         st.session_state["active_user_id"] = None
+
+st.write("SESSION:", st.session_state.get("session"))
+st.write("USER:", st.session_state.get("user"))
+st.write("ACTIVE ID:", st.session_state.get("active_user_id"))
+
+try:
+    current_user = supabase.auth.get_user()
+    st.write("AUTH USER:", current_user)
+except Exception as e:
+    st.write("AUTH ERROR:", e)
 
 
 # ---------------- GET USER ----------------
