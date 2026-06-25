@@ -182,9 +182,6 @@ st.markdown("""
             """ , unsafe_allow_html=True)
 
 
-
-st.write("FINAL USER:", st.session_state.get("user"))
-st.write("FINAL ACTIVE ID:", st.session_state.get("active_user_id"))
 # ================= AUTH PAGE =================
 def auth_page():
 
@@ -946,6 +943,9 @@ local_css("styles.css")
 
    
 
+
+st.write("FINAL USER:", st.session_state.get("user"))
+st.write("FINAL ACTIVE ID:", st.session_state.get("active_user_id"))
 
 ## ----------Router -------
 if st.session_state["user"] is None:
