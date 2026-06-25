@@ -89,6 +89,9 @@ if not st.session_state.get("session"):
     try:
         session = supabase.auth.get_session()
 
+        
+        st.write("RESTORE SESSION:", session)
+
         if session and getattr(session, "user", None):
 
             # Restore authenticated user
@@ -160,11 +163,6 @@ if user and hasattr(user, "email"):
 
     st.sidebar.success(f"Welcome, {name}")
     
-    # st.sidebar.write("User ID:", st.session_state.get("user").id if st.session_state.get("user") else None)
-    # st.sidebar.write("Active ID:", st.session_state.get("active_user_id"))
-    # st.sidebar.write("Role:", st.session_state.get("role"))
-    # st.sidebar.write("Name:", st.session_state.get("full_name"))
-
 else:
     st.sidebar.warning("Please log in")
 
@@ -185,7 +183,8 @@ st.markdown("""
 
 
 
-
+st.write("FINAL USER:", st.session_state.get("user"))
+st.write("FINAL ACTIVE ID:", st.session_state.get("active_user_id"))
 # ================= AUTH PAGE =================
 def auth_page():
 
