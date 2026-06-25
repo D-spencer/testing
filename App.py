@@ -75,6 +75,15 @@ def init_session():
 
 init_session()
 
+
+
+st.write("USER BEFORE RESTORE:", st.session_state.get("user"))
+
+try:
+    st.write("AUTH USER BEFORE RESTORE:", supabase.auth.get_user())
+except Exception as e:
+    st.write("AUTH ERROR:", e)
+
 # ---------------- RESTORE SUPABASE SESSION ----------------
 if not st.session_state.get("session"):
     try:
