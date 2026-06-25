@@ -4,11 +4,17 @@ import streamlit as st
 SUPABASE_URL =  st.secrets["SUPABASE_URL"]
 SUPABASE_KEY = st.secrets["SUPABASE_KEY"]
 
-supabase = create_client(
-    SUPABASE_URL, 
-    SUPABASE_KEY)
+# supabase = create_client(
+#     SUPABASE_URL, 
+#     SUPABASE_KEY)
 
-st.write("SUPABASE OBJECT ID:", id(supabase))
+
+def get_supabase():
+    return create_client(
+        st.secrets["SUPABASE_URL"],
+        st.secrets["SUPABASE_KEY"]
+    )
+
 def save_prediction(
         user_email,
         disease,
@@ -25,7 +31,7 @@ def save_prediction(
         "probability": probability
         }
 
-        response = supabase.table("predictions").insert(data).execute()
+        response = get_supabase.table("predictions").insert(data).execute()
         return response
     except Exception as e:
         st.error(f"Failed to save to database: {e}")
@@ -36,7 +42,7 @@ def save_prediction(
 def get_prediction_history(user_email):
     try:
         response = (
-            supabase
+            get_supabase
             .table("predictions")
             .select("*")
             .eq("user_email", user_email)
@@ -53,7 +59,7 @@ def get_prediction_history(user_email):
 def get_all_predictions():
     try:
         response = (
-            supabase
+            get_supabase
             .table("predictions")
             .select("*")
             .order("created_at", desc=True)
@@ -70,7 +76,7 @@ def get_all_predictions():
 def get_user_role(user_id):
     try:
         response = (
-            supabase
+            get_supabase
             .table("user_roles")
             .select("role")
             .eq("id", user_id)
@@ -93,7 +99,7 @@ def save_feedback(user_email, feedback):
 
     try:
 
-        response = supabase.table("feedback").insert({
+        response = get_supabase.table("feedback").insert({
 
             "user_email": user_email,
             "feedback": feedback
@@ -107,7 +113,7 @@ def save_feedback(user_email, feedback):
 
 
 def get_user_name(user_id):
-    result = supabase.table("profiles") \
+    result = get_supabase.table("profiles") \
         .select("full_name") \
         .eq("id", user_id) \
         .single() \

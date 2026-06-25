@@ -3,10 +3,10 @@ import time
 from nav.tb_page import show_tb_page 
 from nav.hiv_page import show_hiv_page
 from auth import sign_up, login, logout, send_reset_otp, verify_otp_and_update_password,can_request_otp
-from database import supabase, get_user_role, save_feedback, get_user_name
+from database import get_supabase, get_user_role, save_feedback, get_user_name
 from streamlit_extras.stylable_container import stylable_container
 
-
+supabase = get_supabase()
 
 
 

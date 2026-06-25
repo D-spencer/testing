@@ -1,7 +1,9 @@
-from database import supabase, get_user_role, get_user_name
+from database import get_supabase, get_user_role, get_user_name
 import streamlit as st
 import time
 
+
+supabase = get_supabase()
 
 # ---------------- SIGN UP ----------------
 def sign_up(email, password, full_name):
