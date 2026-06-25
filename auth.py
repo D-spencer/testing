@@ -1,9 +1,8 @@
-from database import get_supabase, get_user_role, get_user_name
+from database import supabase, get_user_role, get_user_name
 import streamlit as st
 import time
 
 
-supabase = get_supabase()
 
 # ---------------- SIGN UP ----------------
 def sign_up(email, password, full_name):
@@ -62,7 +61,10 @@ def login(email, password):
             "password": password
         })
 
+
         if response.user and response.session:
+
+
             st.session_state["user"] = None
             st.session_state["session"] = None
             st.session_state["role"] = "user"

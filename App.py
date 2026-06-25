@@ -3,10 +3,10 @@ import time
 from nav.tb_page import show_tb_page 
 from nav.hiv_page import show_hiv_page
 from auth import sign_up, login, logout, send_reset_otp, verify_otp_and_update_password,can_request_otp
-from database import get_supabase, get_user_role, save_feedback, get_user_name
+from database import  get_user_role, save_feedback, get_user_name,supabase
 from streamlit_extras.stylable_container import stylable_container
 
-supabase = get_supabase()
+
 
 
 
@@ -77,43 +77,62 @@ init_session()
 
 
 
-# ---------------- RESTORE SUPABASE SESSION ----------------
-if not st.session_state.get("session"):
-    try:
-        session = supabase.auth.get_session()
+# # ---------------- RESTORE SUPABASE SESSION ----------------
+# if not st.session_state.get("session"):
+#     try:
+#         session = supabase.auth.get_session()
 
 
-        if session and getattr(session, "user", None):
+#         if session and getattr(session, "user", None):
 
-            # Restore authenticated user
-            st.session_state["session"] = session
-            st.session_state["user"] = session.user
-            st.session_state["active_user_id"] = session.user.id
+#             # Restore authenticated user
+#             st.session_state["session"] = session
+#             st.session_state["user"] = session.user
+#             st.session_state["active_user_id"] = session.user.id
 
-            # Fetch role
-            role = get_user_role(session.user.id)
-            st.session_state["role"] = role or "user"
+#             # Fetch role
+#             role = get_user_role(session.user.id)
+#             st.session_state["role"] = role or "user"
 
-            # Fetch full name
-            full_name = get_user_name(session.user.id)
-            st.session_state["full_name"] = full_name or ""
+#             # Fetch full name
+#             full_name = get_user_name(session.user.id)
+#             st.session_state["full_name"] = full_name or ""
 
-        else:
-            # No active session found
-            st.session_state["session"] = None
-            st.session_state["user"] = None
-            st.session_state["role"] = "user"
-            st.session_state["full_name"] = ""
-            st.session_state["active_user_id"] = None
+#         else:
+#             # No active session found
+#             st.session_state["session"] = None
+#             st.session_state["user"] = None
+#             st.session_state["role"] = "user"
+#             st.session_state["full_name"] = ""
+#             st.session_state["active_user_id"] = None
 
-    except Exception as e:
-        st.error(f"Session restore error: {e}")
+#     except Exception as e:
+#         st.error(f"Session restore error: {e}")
 
-        st.session_state["session"] = None
-        st.session_state["user"] = None
-        st.session_state["role"] = "user"
-        st.session_state["full_name"] = ""
-        st.session_state["active_user_id"] = None
+#         st.session_state["session"] = None
+#         st.session_state["user"] = None
+#         st.session_state["role"] = "user"
+#         st.session_state["full_name"] = ""
+#         st.session_state["active_user_id"] = None
+
+
+
+# ---------------- RESTORE USER ----------------
+
+if "user" not in st.session_state:
+    st.session_state["user"] = None
+
+if "session" not in st.session_state:
+    st.session_state["session"] = None
+
+if "role" not in st.session_state:
+    st.session_state["role"] = "user"
+
+if "full_name" not in st.session_state:
+    st.session_state["full_name"] = ""
+
+if "active_user_id" not in st.session_state:
+    st.session_state["active_user_id"] = None
 
 
 # ---------------- GET USER ----------------
@@ -815,6 +834,8 @@ def dashboard():
                     st.query_params["page"] = selected
 
                 st.rerun()
+
+   
 
     # =========================================================
     # 🎛 NAVIGATION STYLE 1: SIDEBAR (FALLBACK FULL CONTROL)
