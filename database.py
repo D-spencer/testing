@@ -238,7 +238,7 @@ def get_user_role(user_id):
             .execute()
         )
 
-        st.write("ROLE RESPONSE:", response.data)
+
 
         if response.data:
             return response.data[0]["role"]
