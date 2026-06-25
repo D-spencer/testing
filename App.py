@@ -77,20 +77,11 @@ init_session()
 
 
 
-st.write("USER BEFORE RESTORE:", st.session_state.get("user"))
-
-try:
-    st.write("AUTH USER BEFORE RESTORE:", supabase.auth.get_user())
-except Exception as e:
-    st.write("AUTH ERROR:", e)
-
 # ---------------- RESTORE SUPABASE SESSION ----------------
 if not st.session_state.get("session"):
     try:
         session = supabase.auth.get_session()
 
-        
-        st.write("RESTORE SESSION:", session)
 
         if session and getattr(session, "user", None):
 
@@ -123,16 +114,6 @@ if not st.session_state.get("session"):
         st.session_state["role"] = "user"
         st.session_state["full_name"] = ""
         st.session_state["active_user_id"] = None
-
-st.write("SESSION:", st.session_state.get("session"))
-st.write("USER:", st.session_state.get("user"))
-st.write("ACTIVE ID:", st.session_state.get("active_user_id"))
-
-try:
-    current_user = supabase.auth.get_user()
-    st.write("AUTH USER:", current_user)
-except Exception as e:
-    st.write("AUTH ERROR:", e)
 
 
 # ---------------- GET USER ----------------
@@ -941,11 +922,7 @@ local_css("styles.css")
 
   
 
-   
 
-
-st.write("FINAL USER:", st.session_state.get("user"))
-st.write("FINAL ACTIVE ID:", st.session_state.get("active_user_id"))
 
 ## ----------Router -------
 if st.session_state["user"] is None:
