@@ -571,3 +571,43 @@ div[data-testid="stVerticalBlock"]:has(> .auth-box),
 [data-testid="stSidebarCollapseButton"] span {
     color: white !important;
 }
+
+
+
+
+
+
+/* Current disease */
+section[data-testid="stSidebar"] .stButton button[kind="primary"] {
+    background: rgba(123,44,255,0.15) !important;
+    color: #7b2cff !important;
+
+    border-left: 4px solid #7b2cff !important;
+    border-top: none !important;
+    border-right: none !important;
+    border-bottom: none !important;
+
+    font-weight: 700 !important;
+}
+
+/* Other diseases */
+section[data-testid="stSidebar"] .stButton button[kind="secondary"] {
+    border-left: 4px solid transparent !important;
+}
+
+
+/* Select a Disease title */
+section[data-testid="stSidebar"]
+div[data-testid="stMarkdownContainer"] h3 {
+    color: #d8c4ff !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 10px rgba(123,44,255,0.3);
+}
+
+
+/* Metric values */
+div[data-testid="stMetricValue"] p {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-shadow: 0 0 10px rgba(255,255,255,0.15);
+}
