@@ -5,7 +5,9 @@ from nav.hiv_page import show_hiv_page
 from auth import sign_up, login, logout, send_reset_otp, verify_otp_and_update_password,can_request_otp
 from database import  get_user_role, save_feedback, get_user_name,supabase
 from streamlit_extras.stylable_container import stylable_container
-
+import qrcode
+from io import BytesIO
+import streamlit.components.v1 as components
 
 
 
@@ -680,7 +682,7 @@ def dashboard():
 
 
     # =========================
-    # URL ROUTING (PRO LEVEL)
+    # URL ROUTING 
     # =========================
     query_params = st.query_params
 
@@ -856,15 +858,7 @@ def dashboard():
                 st.rerun()
 
 
-    # # =========================================================
-    # # 👀 VISUAL INDICATOR (ALWAYS SHOWN)
-    # # =========================================================
-    # st.segmented_control(
-    #     "Current Selection",
-    #     options=disease_options,
-    #     default=st.session_state.page,
-    #     disabled=True
-    # )
+    
 
 
     # =========================
@@ -875,6 +869,102 @@ def dashboard():
 
     elif st.session_state.page == "HIV/AIDS":
         show_hiv_page()
+
+
+
+    # =====================================
+    # SHARE APP SECTION
+    # =====================================
+
+    APP_URL = "testing2222222.streamlit.app"   
+
+    st.sidebar.divider()
+
+    with st.sidebar.expander(" Share This App", icon=":material/share:", expanded=False):
+
+        # -------------------------
+        # App Link
+        # -------------------------
+        st.text_input(
+            "App Link",
+            value=APP_URL,
+            disabled=True,
+            key="share_link"
+        )
+
+        # -------------------------
+        # QR Code
+        # -------------------------
+        qr = qrcode.make(APP_URL)
+
+        buf = BytesIO()
+        qr.save(buf, format="PNG")
+
+        st.image(
+            buf.getvalue(),
+            width=180,
+            caption="Scan QR Code"
+        )
+
+        # -------------------------
+        # Native Mobile Share
+        # -------------------------
+        # components.html(
+        #     f"""
+        #     <button id="shareBtn"
+        #         style="
+        #             width:100%;
+        #             padding:10px;
+        #             border:none;
+        #             border-radius:10px;
+        #             background:#7b2cff;
+        #             color:white;
+        #             cursor:pointer;
+        #             font-weight:600;
+        #         ">
+        #         📱 Share on Device
+        #     </button>
+
+        components.html(
+        f"""
+        <button id="shareBtn"
+            style="
+                width:100%;
+                padding:10px;
+                border:none;
+                border-radius:10px;
+                background:#7b2cff;
+                color:white;
+                cursor:pointer;
+                font-weight:600;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                gap:8px;
+            ">
+            Share on Device 
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/>
+            </svg>
+        </button>
+
+
+            <script>
+            document.getElementById("shareBtn").onclick = async () => {{
+                try {{
+                    await navigator.share({{
+                        title: "Disease Prediction System",
+                        text: "Try this TB & HIV Prediction App",
+                        url: "{APP_URL}"
+                    }});
+                }} catch(err) {{
+                    console.log(err);
+                }}
+            }};
+            </script>
+            """,
+            height=60,
+        )
 
 
 
@@ -913,14 +1003,14 @@ LEARNING APPROACE <br>
     """, unsafe_allow_html=True)
             
             
-    st.sidebar.divider()
+    
     if st.sidebar.button("Logout", icon=":material/logout:"):
         logout()
         st.rerun()
 
     # st.sidebar.button("Logout", icon=":material/exit_to_app:")
     
-   
+    
 
 
 

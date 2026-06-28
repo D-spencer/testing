@@ -611,3 +611,35 @@ div[data-testid="stMetricValue"] p {
     font-weight: 800 !important;
     text-shadow: 0 0 10px rgba(255,255,255,0.15);
 }
+
+
+/* Sidebar labels */
+section[data-testid="stSidebar"]
+label[data-testid="stWidgetLabel"] p {
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+/* Share App title */
+section[data-testid="stSidebar"]
+[data-testid="stExpander"] p {
+    color: #d8c4ff !important;
+    font-weight: 700 !important;
+}
+
+/* Arrow */
+section[data-testid="stSidebar"]
+[data-testid="stIconMaterial"] {
+    color: white !important;
+}
+
+
+@media (prefers-color-scheme: light) {
+    div[data-baseweb="select"] {
+        color: #222 !important;
+    }
+
+    div[data-baseweb="select"] * {
+        color: #222 !important;
+    }
+}
