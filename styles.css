@@ -634,12 +634,22 @@ section[data-testid="stSidebar"]
 }
 
 
-@media (prefers-color-scheme: light) {
-    div[data-baseweb="select"] {
-        color: #222 !important;
-    }
 
-    div[data-baseweb="select"] * {
-        color: #222 !important;
-    }
+
+/* Placeholder text */
+div[data-baseweb="select"] div:last-child {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    filter: none !important;
 }
+
+/* Placeholder container */
+div[data-baseweb="select"] div:last-child * {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+
+
+
+
