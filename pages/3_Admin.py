@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from database import get_all_predictions,get_user_role
+from database import get_all_predictions,get_user_role,get_all_feedback
 import plotly.express as px
 from auth import logout
 
@@ -49,9 +49,14 @@ data = get_all_predictions()
 df = pd.DataFrame(data) if data else pd.DataFrame()
 
 
+### feedback data---------------
+feedback_data = get_all_feedback()
+feedback_df = pd.DataFrame(feedback_data) if feedback_data else pd.DataFrame()
+
+
 #---------------System Overview metrics----------------
 st.header("System Overview")
-col1,col2,col3,col4 = st.columns(4)
+col1, col2, col3, col4, col5 = st.columns(5)
 
 with col1:
     st.metric(label="Total Predictions", value=len(df))
@@ -68,6 +73,11 @@ with col4:
     hiv_count = len(df[df['disease'] == 'HIV']) if not df.empty else 0
     st.metric("HIV Cases", hiv_count)
 
+with col5:
+    st.metric(
+        "Total Feedback",
+        len(feedback_df)
+    )
 ## ------------Filter --------------------------------
 st.subheader("Filters")
 
@@ -487,6 +497,153 @@ st.download_button(
     data=csv,
     file_name="admin_data_export.csv",
     mime="text/csv"
+)
+
+
+# =====================================================
+# USER FEEDBACK
+# =====================================================
+
+st.divider()
+st.header("User Feedback")
+
+if feedback_df.empty:
+    st.info("No feedback has been submitted yet.")
+
+else:
+
+    # convert date
+    feedback_df["created_at"] = pd.to_datetime(
+        feedback_df["created_at"]
+    )
+
+    # Search box
+    search = st.text_input(
+        "Search by Email",
+        placeholder="example@gmail.com"
+    )
+
+    filtered_feedback = feedback_df.copy()
+
+    if search:
+        filtered_feedback = filtered_feedback[
+            filtered_feedback["user_email"]
+            .str.contains(search, case=False, na=False)
+        ]
+
+    # Latest first
+    filtered_feedback = filtered_feedback.sort_values(
+        by="created_at",
+        ascending=False
+    )
+
+    st.subheader("Recent Feedback")
+
+    if not filtered_feedback.empty:
+
+        # ---------------- Sort Feedback ----------------
+        filtered_feedback = filtered_feedback.sort_values(
+            by="created_at",
+            ascending=False
+        ).reset_index(drop=True)
+
+        # ---------------- Pagination Settings ----------------
+        feedbacks_per_page = 10
+
+        total_feedback = len(filtered_feedback)
+        total_pages = max(
+            1,
+            (total_feedback + feedbacks_per_page - 1) // feedbacks_per_page
+        )
+
+        # ---------------- Current Page ----------------
+        if "feedback_page" not in st.session_state:
+            st.session_state.feedback_page = 1
+
+        # Prevent invalid page numbers
+        if st.session_state.feedback_page > total_pages:
+            st.session_state.feedback_page = total_pages
+
+        if st.session_state.feedback_page < 1:
+            st.session_state.feedback_page = 1
+
+        page = st.session_state.feedback_page
+
+        # ---------------- Slice Current Page ----------------
+        start = (page - 1) * feedbacks_per_page
+        end = start + feedbacks_per_page
+
+        page_feedback = filtered_feedback.iloc[start:end]
+
+        # ---------------- Info ----------------
+        st.caption(
+            f"Showing {start + 1} - {min(end, total_feedback)} of {total_feedback} feedback(s)"
+        )
+
+        # ---------------- Feedback Expanders ----------------
+        for _, row in page_feedback.iterrows():
+
+            date = pd.to_datetime(row["created_at"]).strftime(
+                "%d %b %Y • %I:%M %p"
+            )
+
+            with st.expander(f"👤 {row['user_email']}   |   🕒 {date}"):
+
+                st.write(row["feedback"])
+
+        # ---------------- Bottom Pagination ----------------
+        st.divider()
+
+        col1, col2, col3 = st.columns([1, 2, 1])
+
+        with col1:
+            if st.button(
+                "⬅ Previous",
+                disabled=(page == 1),
+                use_container_width=True,
+                key="feedback_previous"
+            ):
+                st.session_state.feedback_page -= 1
+                st.rerun()
+
+        with col2:
+            st.markdown(
+                f"""
+                <div style="
+                    text-align:center;
+                    font-size:18px;
+                    font-weight:600;
+                    padding-top:8px;
+                ">
+                    Page {page} of {total_pages}
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
+        with col3:
+            if st.button(
+                "Next ➡",
+                disabled=(page == total_pages),
+                use_container_width=True,
+                key="feedback_next"
+            ):
+                st.session_state.feedback_page += 1
+                st.rerun()
+
+    else:
+        st.info("No feedback available.")
+
+
+
+###download feedback as CSV### 
+feedback_csv = filtered_feedback.to_csv(index=False)
+
+st.download_button(
+    "Download Feedback CSV",
+    feedback_csv,
+    "feedback_export.csv",
+    "text/csv"
 )
 
 
