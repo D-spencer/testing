@@ -90,21 +90,52 @@ def get_user_role(user_id):
 
 
 # ================= SAVE FEEDBACK =================
+# def save_feedback(user_email, feedback):
+
+#     try:
+
+#         response = supabase.table("feedback").insert({
+
+#             "user_email": user_email,
+#             "feedback": feedback
+
+#         }).execute()
+
+#         return response
+
+#     except Exception as e:
+#         st.error(f"Feedback Error: {e}")
+
+
 def save_feedback(user_email, feedback):
 
     try:
 
-        response = supabase.table("feedback").insert({
-
-            "user_email": user_email,
-            "feedback": feedback
-
-        }).execute()
+        
+        response = (
+            supabase
+            .table("feedback")
+            .insert({
+                "user_email": user_email,
+                "feedback": feedback
+            })
+            .execute()
+        )
 
         return response
 
     except Exception as e:
         st.error(f"Feedback Error: {e}")
+
+
+def get_all_feedback():
+    response = (
+        supabase.table("feedback")
+        .select("*")
+        .order("created_at", desc=True)
+        .execute()
+    )
+    return response.data
 
 
 def get_user_name(user_id):
