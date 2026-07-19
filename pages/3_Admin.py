@@ -56,28 +56,28 @@ feedback_df = pd.DataFrame(feedback_data) if feedback_data else pd.DataFrame()
 
 #---------------System Overview metrics----------------
 st.header("System Overview")
-col1, col2, col3, col4, col5 = st.columns(5)
+
+col1, col2, col3 = st.columns(3)
 
 with col1:
-    st.metric(label="Total Predictions", value=len(df))
+    st.metric("Total Predictions", len(df))
 
 with col2:
-    total_users = df['user_email'].nunique() if not df.empty else 0
+    total_users = df["user_email"].nunique() if not df.empty else 0
     st.metric("Total Users", total_users)
 
 with col3:
-    tb_count = len(df[df['disease'] == 'Tuberculosis']) if not df.empty else 0
+    tb_count = len(df[df["disease"] == "Tuberculosis"]) if not df.empty else 0
     st.metric("TB Cases", tb_count)
 
+col4, col5 = st.columns(2)
+
 with col4:
-    hiv_count = len(df[df['disease'] == 'HIV']) if not df.empty else 0
+    hiv_count = len(df[df["disease"] == "HIV"]) if not df.empty else 0
     st.metric("HIV Cases", hiv_count)
 
 with col5:
-    st.metric(
-        "Total Feedback",
-        len(feedback_df)
-    )
+    st.metric("Total Feedback", len(feedback_df))
 ## ------------Filter --------------------------------
 st.subheader("Filters")
 
