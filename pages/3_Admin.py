@@ -226,7 +226,7 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 # Bar Chart:Postive vs negative
-
+st.markdown("<hr>", unsafe_allow_html=True)
 
 if not filtered_df.empty:
 
