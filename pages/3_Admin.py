@@ -23,7 +23,23 @@ def local_css(file_name):
 
 # ================= APPLY CSS =================
 local_css("styles.css")
+st.markdown("""
+<style>
 
+/* Metric cards */
+[data-testid="stVerticalBlockBorderWrapper"]{
+    border-radius:16px;
+    border:1px solid rgba(128,128,128,.25);
+    transition:.2s ease;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 18px rgba(0,0,0,.08);
+}
+
+</style>
+""", unsafe_allow_html=True)
 
 
 st.title("Admin Dashboard")
@@ -55,29 +71,88 @@ feedback_df = pd.DataFrame(feedback_data) if feedback_data else pd.DataFrame()
 
 
 #---------------System Overview metrics----------------
-st.header("System Overview")
+# st.header("System Overview")
+# col1, col2, col3, col4, col5 = st.columns(5)
 
-col1, col2, col3 = st.columns(3)
+# with col1:
+#     st.metric(label="Total Predictions", value=len(df))
+
+# with col2:
+#     total_users = df['user_email'].nunique() if not df.empty else 0
+#     st.metric("Total Users", total_users)
+
+# with col3:
+#     tb_count = len(df[df['disease'] == 'Tuberculosis']) if not df.empty else 0
+#     st.metric("TB Cases", tb_count)
+
+# with col4:
+#     hiv_count = len(df[df['disease'] == 'HIV']) if not df.empty else 0
+#     st.metric("HIV Cases", hiv_count)
+
+# with col5:
+#     st.metric(
+#         "Total Feedback",
+#         len(feedback_df)
+#     )
+
+
+
+# ===================== System Overview =====================
+
+st.header("📊 System Overview")
+
+# Metrics
+total_predictions = len(df)
+total_users = df["user_email"].nunique() if not df.empty else 0
+tb_count = len(df[df["disease"] == "Tuberculosis"]) if not df.empty else 0
+hiv_count = len(df[df["disease"] == "HIV"]) if not df.empty else 0
+total_feedback = len(feedback_df)
+
+# ---------------- Row 1 ----------------
+col1, col2 = st.columns(2)
 
 with col1:
-    st.metric("Total Predictions", len(df))
+    with st.container(border=True):
+        st.caption("Total Predictions")
+        st.markdown(
+            f"<h2 style='text-align:center; margin:0;'>{total_predictions}</h2>",
+            unsafe_allow_html=True
+        )
 
 with col2:
-    total_users = df["user_email"].nunique() if not df.empty else 0
-    st.metric("Total Users", total_users)
+    with st.container(border=True):
+        st.caption("Total Users")
+        st.markdown(
+            f"<h2 style='text-align:center; margin:0;'>{total_users}</h2>",
+            unsafe_allow_html=True
+        )
 
-with col3:
-    tb_count = len(df[df["disease"] == "Tuberculosis"]) if not df.empty else 0
-    st.metric("TB Cases", tb_count)
+# ---------------- Row 2 ----------------
+col1, col2 = st.columns(2)
 
-col4, col5 = st.columns(2)
+with col1:
+    with st.container(border=True):
+        st.caption("TB Cases")
+        st.markdown(
+            f"<h2 style='text-align:center; margin:0;'>{tb_count}</h2>",
+            unsafe_allow_html=True
+        )
 
-with col4:
-    hiv_count = len(df[df["disease"] == "HIV"]) if not df.empty else 0
-    st.metric("HIV Cases", hiv_count)
+with col2:
+    with st.container(border=True):
+        st.caption("HIV Cases")
+        st.markdown(
+            f"<h2 style='text-align:center; margin:0;'>{hiv_count}</h2>",
+            unsafe_allow_html=True
+        )
 
-with col5:
-    st.metric("Total Feedback", len(feedback_df))
+# ---------------- Row 3 ----------------
+with st.container(border=True):
+    st.caption("Total Feedback")
+    st.markdown(
+        f"<h2 style='text-align:center; margin:0;'>{total_feedback}</h2>",
+        unsafe_allow_html=True
+    )
 ## ------------Filter --------------------------------
 st.subheader("Filters")
 
