@@ -469,19 +469,59 @@ if not filtered_df.empty:
     st.plotly_chart(fig, use_container_width=True)
 
 #-----------Prediction Status----------------
+st.markdown("<hr>", unsafe_allow_html=True)
 st.subheader("Prediction Results")
 
-col1, col2 = st.columns(2)
+positive = len(df[df["prediction"] == 1]) if not df.empty else 0
+negative = len(df[df["prediction"] == 0]) if not df.empty else 0
 
-with col1:
-    positive = len(df[df['prediction'] == 1]) if not df.empty else 0
-    st.metric("Positive Cases", positive)
+st.markdown(f"""
+<style>
 
-with col2:
-    negative = len(df[df['prediction'] == 0]) if not df.empty else 0
-    st.metric("Negative Cases", negative)  
+.results-container {{
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}}
 
+.result-card {{
+    flex: 1;
+    background: var(--secondary-background-color);
+    border: 1px solid rgba(128,128,128,0.25);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+}}
+
+.result-title {{
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}}
+
+.result-value {{
+    font-size: 34px;
+    font-weight: bold;
+}}
+
+</style>
+
+<div class="results-container">
+
+<div class="result-card">
+<div class="result-title">Positive Cases</div>
+<div class="result-value">{positive}</div>
+</div>
+
+<div class="result-card">
+<div class="result-title">Negative Cases</div>
+<div class="result-value">{negative}</div>
+</div>
+
+</div>
+""", unsafe_allow_html=True)
 # --------------------Full Data Table----------------------
+st.markdown("<hr>", unsafe_allow_html=True)
 st.subheader("All Predictions Records")
 
 if filtered_df.empty:
